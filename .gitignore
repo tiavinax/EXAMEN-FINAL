@@ -1,0 +1,72 @@
+# IGNORER LES FICHIERS DE CONFIGURATION LOCALE
+# Ces fichiers contiennent des informations sensibles (mots de passe)
+# Chaque développeur doit avoir sa propre version
+app/config/config.php
+app/config/database.local.php
+app/config/local.php
+config.php
+
+# IGNORER LES FICHIERS DE BASE DE DONNÉES LOCAUX
+# Les fichiers .sqlite sont des bases de données locales
+# Ils sont volumineux et spécifiques à chaque machine
+*.sqlite
+*.sqlite3
+
+# IGNORER LE DOSSIER VENDOR (DÉPENDANCES COMPOSER)
+# Ce dossier est généré automatiquement par "composer install"
+# Il contient des milliers de fichiers, inutile de les versionner
+/vendor/
+
+# IGNORER LES FICHIERS DE LOG
+# Les logs sont différents sur chaque machine
+# Ils grossissent rapidement
+app/log/
+logs/
+*.log
+
+# IGNORER LES FICHIERS DE CACHE
+# Le cache est temporaire et spécifique à chaque exécution
+app/cache/
+cache/
+*.cache
+temp/
+tmp/
+
+# IGNORER LES FICHIERS PROPRES À L'IDE
+# Chaque développeur utilise son éditeur préféré
+# Ces fichiers sont personnels
+.vscode/
+.idea/
+*.sublime-*
+.project
+.classpath
+.settings/
+
+# IGNORER LES FICHIERS PROPRES À L'OS
+# Fichiers cachés créés par MacOS
+.DS_Store
+# Fichiers créés par Linux/Unix
+*.swp
+*.swo
+*~
+# Fichiers créés par Windows
+Thumbs.db
+Desktop.ini
+
+# IGNORER LES FICHIERS D'ENVIRONNEMENT
+# Les fichiers .env contiennent les variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# IGNORER LES ARCHIVES ET PACKAGES
+# Pas besoin de versionner les archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# IGNORER LES FICHIERS SPÉCIFIQUES À VOTRE PROJET
+# Ajoutez ici d'autres fichiers que vous ne voulez pas versionner
+.htaccess
+.DS_Store
