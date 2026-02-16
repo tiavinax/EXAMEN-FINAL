@@ -1,15 +1,47 @@
 <?php
 // dashboard/home.php
 $title = "Tableau de bord - BNGRC";
-$page_css = ['homelia']; // homelia.css au lieu de dashboard.css
+$page_css = ['homelia'];
 include __DIR__ . '/../inc/header.php';
-// var_dump($data);
-
 ?>
 
-<!-- Styles spécifiques au dashboard (si nécessaire) -->
 <style>
-/* Vous pouvez mettre ici les styles qui ne sont pas dans homelia.css */
+    /* Styles pour les filtres actifs */
+    .filter-item select {
+        cursor: pointer;
+    }
+    
+    .filter-badge {
+        background: var(--primary);
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        margin-left: 0.3rem;
+    }
+    
+    .reset-filters {
+        background: var(--gray-100);
+        border: 1px solid var(--gray-300);
+        border-radius: 40px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .reset-filters:hover {
+        background: var(--gray-200);
+        border-color: var(--gray-400);
+    }
+    
+    .reset-filters i {
+        font-size: 0.8rem;
+    }
 </style>
 
 <div class="dashboard-wrapper">
@@ -92,41 +124,48 @@ include __DIR__ . '/../inc/header.php';
         <div class="filters-group">
             <div class="filter-item">
                 <i class="bi bi-geo-alt"></i>
-                <select>
-                    <option>Toutes les villes</option>
-                    <option>Antananarivo</option>
-                    <option>Toamasina</option>
-                    <option>Mahajanga</option>
-                    <option>Fianarantsoa</option>
+                <select id="villeFilter">
+                    <option value="">Toutes les villes</option>
+                    <?php 
+                    $villes = array_unique(array_column($data, 'ville_nom'));
+                    sort($villes);
+                    foreach($villes as $ville): 
+                    ?>
+                        <option value="<?= htmlspecialchars($ville) ?>"><?= htmlspecialchars($ville) ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="filter-item">
                 <i class="bi bi-tag"></i>
-                <select>
-                    <option>Tous les types</option>
-                    <option>Alimentaire</option>
-                    <option>Médical</option>
-                    <option>Vêtements</option>
+                <select id="typeFilter">
+                    <option value="">Tous les types</option>
+                    <?php 
+                    $types = array_unique(array_column($data, 'besoin_type'));
+                    sort($types);
+                    foreach($types as $type): 
+                    ?>
+                        <option value="<?= htmlspecialchars($type) ?>"><?= htmlspecialchars($type) ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="filter-item">
                 <i class="bi bi-clock"></i>
-                <select>
-                    <option>Tous les statuts</option>
-                    <option>En cours</option>
-                    <option>Terminé</option>
-                    <option>Urgent</option>
+                <select id="statutFilter">
+                    <option value="">Tous les statuts</option>
+                    <option value="Terminé">Terminé</option>
+                    <option value="En cours">En cours</option>
+                    <option value="Urgent">Urgent</option>
                 </select>
             </div>
         </div>
         <div class="actions-group">
-            <button class="btn-outline">
+            <button class="reset-filters" id="resetFilters">
+                <i class="bi bi-x-circle"></i>
+                Réinitialiser
+            </button>
+            <button class="btn-outline" onclick="exportTable()">
                 <i class="bi bi-download"></i>
                 Exporter
-            </button>
-            <button class="btn-primary">
-                <i class="bi bi-search"></i>
-                Rechercher
             </button>
         </div>
     </div>
@@ -165,7 +204,10 @@ include __DIR__ . '/../inc/header.php';
                         $statut = $pourcentage >= 100 ? 'Terminé' : ($pourcentage >= 50 ? 'En cours' : 'Urgent');
                         $statutClass = $pourcentage >= 100 ? 'badge-success' : ($pourcentage >= 50 ? 'badge-warning' : 'badge-danger');
                     ?>
-                    <tr>
+                    <tr class="data-row" 
+                        data-ville="<?= htmlspecialchars($d->ville_nom) ?>"
+                        data-type="<?= htmlspecialchars($d->besoin_type) ?>"
+                        data-statut="<?= $statut ?>">
                         <td>
                             <span class="badge-city">
                                 <i class="bi bi-pin-map-fill"></i>
@@ -209,17 +251,11 @@ include __DIR__ . '/../inc/header.php';
 
         <div class="table-footer">
             <div class="text-muted">
-                <small><i class="bi bi-database me-1"></i><?= count($data) ?> résultats</small>
+                <small><i class="bi bi-database me-1"></i><span id="resultCount"><?= count($data) ?></span> résultats</small>
             </div>
             <nav>
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">«</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">»</a></li>
+                <ul class="pagination" id="pagination">
+                    <!-- La pagination sera générée en JS -->
                 </ul>
             </nav>
         </div>
@@ -247,7 +283,7 @@ include __DIR__ . '/../inc/header.php';
             </div>
             <div class="modal-footer modal-footer-custom">
                 <button type="button" class="btn-outline" data-bs-dismiss="modal">Fermer</button>
-                <button type="button" class="btn-primary">
+                <button type="button" class="btn-primary" onclick="exportModalData()">
                     <i class="bi bi-download me-1"></i> Exporter
                 </button>
             </div>
@@ -257,6 +293,103 @@ include __DIR__ . '/../inc/header.php';
 
 <script src="/assets/js/bootstrap.bundle.min.js"></script>
 <script>
+// Variables globales
+let currentModalData = [];
+
+// Fonction de filtrage
+function filterTable() {
+    const villeFilter = document.getElementById('villeFilter').value;
+    const typeFilter = document.getElementById('typeFilter').value;
+    const statutFilter = document.getElementById('statutFilter').value;
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    
+    const rows = document.querySelectorAll('.data-row');
+    let visibleCount = 0;
+    
+    rows.forEach(row => {
+        const ville = row.dataset.ville;
+        const type = row.dataset.type;
+        const statut = row.dataset.statut;
+        const text = row.textContent.toLowerCase();
+        
+        const matchVille = !villeFilter || ville === villeFilter;
+        const matchType = !typeFilter || type === typeFilter;
+        const matchStatut = !statutFilter || statut === statutFilter;
+        const matchSearch = !searchTerm || text.includes(searchTerm);
+        
+        if (matchVille && matchType && matchStatut && matchSearch) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    // Mettre à jour le compteur
+    document.getElementById('resultCount').textContent = visibleCount;
+    
+    // Afficher un message si aucun résultat
+    const noResultsRow = document.getElementById('noResultsRow');
+    if (visibleCount === 0) {
+        if (!noResultsRow) {
+            const tbody = document.getElementById('tableBody');
+            const tr = document.createElement('tr');
+            tr.id = 'noResultsRow';
+            tr.innerHTML = '<td colspan="9" class="text-center py-4"><i class="bi bi-inbox fs-1 d-block mb-2"></i>Aucun résultat trouvé</td>';
+            tbody.appendChild(tr);
+        }
+    } else if (noResultsRow) {
+        noResultsRow.remove();
+    }
+}
+
+// Recherche en temps réel
+document.getElementById('searchInput').addEventListener('keyup', filterTable);
+
+// Filtres
+document.getElementById('villeFilter').addEventListener('change', filterTable);
+document.getElementById('typeFilter').addEventListener('change', filterTable);
+document.getElementById('statutFilter').addEventListener('change', filterTable);
+
+// Réinitialiser les filtres
+document.getElementById('resetFilters').addEventListener('click', function() {
+    document.getElementById('villeFilter').value = '';
+    document.getElementById('typeFilter').value = '';
+    document.getElementById('statutFilter').value = '';
+    document.getElementById('searchInput').value = '';
+    filterTable();
+});
+
+// Fonction d'export
+function exportTable() {
+    const rows = [];
+    const headers = ['Ville', 'Type', 'Libellé', 'Besoin', 'Attribué', 'Reste', 'Progression', 'Statut'];
+    rows.push(headers.join(','));
+    
+    document.querySelectorAll('.data-row:not([style*="display: none"])').forEach(row => {
+        const rowData = [
+            row.querySelector('.badge-city').textContent.trim(),
+            row.querySelector('.badge-type').textContent.trim(),
+            row.querySelector('td:nth-child(3)').textContent.trim(),
+            row.querySelector('td:nth-child(4)').textContent.trim(),
+            row.querySelector('td:nth-child(5)').textContent.trim(),
+            row.querySelector('td:nth-child(6)').textContent.trim(),
+            row.querySelector('.progress-text').textContent.trim(),
+            row.querySelector('td:nth-child(8) span').textContent.trim()
+        ];
+        rows.push(rowData.join(','));
+    });
+    
+    const csv = rows.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dashboard_bngrc.csv';
+    a.click();
+}
+
+// Voir détails
 function voirDetails(besoinId) {
     const modalBody = document.getElementById('modalBody');
     
@@ -272,6 +405,7 @@ function voirDetails(besoinId) {
     fetch('/dashboard/attributions/' + besoinId)
         .then(response => response.json())
         .then(data => {
+            currentModalData = data;
             if (data.length === 0) {
                 modalBody.innerHTML = `
                     <div class="text-center py-5">
@@ -345,16 +479,30 @@ function voirDetails(besoinId) {
     modal.show();
 }
 
-// Recherche en temps réel
-document.getElementById('searchInput').addEventListener('keyup', function(e) {
-    const searchTerm = e.target.value.toLowerCase();
-    const rows = document.querySelectorAll('#tableBody tr');
+// Exporter les données du modal
+function exportModalData() {
+    if (currentModalData.length === 0) return;
     
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    const rows = [['Donateur', 'Quantité', 'Date', 'Référence']];
+    
+    currentModalData.forEach((a, index) => {
+        const date = new Date(a.date_attribution).toLocaleDateString('fr-FR');
+        rows.push([
+            a.donateur || 'Anonyme',
+            a.quantite_attribuee || a.montant_attribue,
+            date,
+            `#ATT-${String(index + 1).padStart(4, '0')}`
+        ]);
     });
-});
+    
+    const csv = rows.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'attributions.csv';
+    a.click();
+}
 
 // Animation du menu mobile
 document.querySelector('.hamburger')?.addEventListener('click', function() {
