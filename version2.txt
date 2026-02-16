@@ -1,0 +1,215 @@
+Étape 1 : Base de données
+Créer la table parametre
+
+Insérer le paramètre frais_achat avec valeur par défaut (ex: 10)
+
+Étape 2 : Modèles
+Créer ParametreModel.php (get, update)
+
+Mettre à jour BesoinModel.php pour récupérer besoins restants
+
+Mettre à jour DonModel.php pour récupérer dons argent disponibles
+
+Créer AchatModel.php pour gérer les achats
+
+Étape 3 : Interface besoins restants
+Créer page besoins/restants.php
+
+Afficher liste des besoins non satisfaits avec bouton "Acheter"
+
+Pour chaque besoin, afficher : ville, libellé, quantité restante, prix unitaire, total (quantité × prix)
+
+Étape 4 : Modal d'achat
+Créer modal avec :
+
+Liste des dons argent disponibles
+
+Champ pour saisir quantité à acheter
+
+Affichage du calcul : prix total, frais, total avec frais
+
+Bouton "Simuler" et "Valider"
+
+Étape 5 : Simulation (sans sauvegarde)
+Endpoint AJAX /achats/simuler
+
+Calculer :
+
+Montant besoin = quantité × prix_unitaire
+
+Frais = montant besoin × (frais/100)
+
+Total à déduire = montant besoin + frais
+
+Vérifier si don sélectionné a assez de solde
+
+Retourner résultat au format JSON
+
+Étape 6 : Validation (avec sauvegarde)
+Endpoint /achats/valider
+
+Créer enregistrement dans table achats
+
+Créer attribution correspondante
+
+Mettre à jour solde du don (si on suit traçabilité)
+
+Rediriger avec message de succès/erreur
+
+Étape 7 : Page récapitulative avec Ajax
+Créer page recapitulatif/index.php
+
+Endpoint AJAX /api/recapitulatif
+
+Total besoins (quantité × prix)
+
+Total satisfait (somme des attributions en valeur)
+
+Total restant
+
+Bouton "Actualiser" avec fetch AJAX
+
+Afficher les chiffres avec mise en forme (cartes)
+
+✅ TODO FRONT-END - VERSION 2
+Étape 1 : Page des besoins restants
+Créer fichier app/views/besoins/restants.php
+
+Intégrer le header/footer
+
+Titre : "Besoins restants à satisfaire"
+
+Design d'un tableau avec :
+
+Colonnes : Ville | Besoin | Type | Quantité restante | Prix unitaire | Total (Ar) | Action
+
+Ligne par besoin avec reste > 0
+
+Bouton "Acheter" dans colonne Action
+
+Étape 2 : Modal d'achat (structure HTML)
+Créer un modal Bootstrap caché
+
+ID du modal : modalAchat
+
+Contenu du modal :
+
+Titre : "Achat via don en argent"
+
+Info besoin (ville, libellé, quantité restante)
+
+Selecteur : "Choisir un don" (liste des dons argent disponibles)
+
+Champ : "Quantité à acheter" (input number)
+
+Affichage prix unitaire
+
+Affichage frais (x%)
+
+Affichage total à payer
+
+2 boutons : "Simuler" et "Valider l'achat"
+
+Étape 3 : Remplir le modal dynamiquement
+Au clic sur "Acheter" :
+
+Récupérer les données du besoin (data-* attributes)
+
+Mettre à jour le modal avec ces infos
+
+Afficher le prix unitaire et le calcul initial
+
+Ouvrir le modal
+
+Étape 4 : Simulation (AJAX)
+Au clic sur "Simuler" :
+
+Récupérer : besoin_id, don_id, quantite
+
+Envoyer à /achats/simuler en fetch POST
+
+Afficher le résultat dans le modal :
+
+Montant sans frais
+
+Frais
+
+Total avec frais
+
+Message si solde insuffisant
+
+Étape 5 : Validation (AJAX ou formulaire)
+Au clic sur "Valider" :
+
+Envoyer à /achats/valider
+
+Afficher message succès/erreur
+
+Fermer modal si succès
+
+Rafraîchir la page ou mettre à jour le tableau
+
+Étape 6 : Page récapitulative
+Créer fichier app/views/recapitulatif/index.php
+
+3 grandes cartes :
+
+Carte 1 : "Besoins totaux" (montant)
+
+Carte 2 : "Déjà satisfaits" (montant)
+
+Carte 3 : "Restants à financer" (montant)
+
+Bouton "Actualiser" avec icône refresh
+
+Étape 7 : Actualisation AJAX
+Créer endpoint /api/recapitulatif (retour JSON)
+
+Au clic sur Actualiser :
+
+Fetch GET vers l'endpoint
+
+Mettre à jour les 3 cartes sans recharger la page
+
+Ajouter effet de chargement (spinner)
+
+📁 Structure des vues à créer
+text
+app/views/
+├── besoins/
+│   └── restants.php          (Nouveau)
+├── recapitulatif/
+│   └── index.php              (Nouveau)
+└── (les dossiers existants)
+🎨 Maquette simple pour la page besoins restants
+text
+┌─────────────────────────────────────────────────────┐
+│  Besoins restants à satisfaire                       │
+├─────────────────────────────────────────────────────┤
+│ Ville  │ Besoin │ Type │ Reste │ P.U  │ Total │     │
+├────────┼────────┼──────┼───────┼──────┼───────┼─────┤
+│ Tana   │ Riz    │ Nat  │ 700kg │ 2500 │ 1.75M │ 🔘  │
+│ Tana   │ Huile  │ Nat  │ 350L  │ 3000 │ 1.05M │ 🔘  │
+│ Tama   │ Riz    │ Nat  │ 600kg │ 2500 │ 1.5M  │ 🔘  │
+└────────┴────────┴──────┴───────┴──────┴───────┴─────┘
+                          🔘 = Bouton Acheter
+🎨 Maquette simple pour la page récapitulative
+text
+┌─────────────────────────────────────────────────────┐
+│  Récapitulatif financier                    🔄      │
+├─────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐ │
+│  │   TOTAL     │  │  SATISFAIT  │  │   RESTANT   │ │
+│  │ 5 000 000 Ar│  │ 2 500 000 Ar│  │ 2 500 000 Ar│ │
+│  └─────────────┘  └─────────────┘  └─────────────┘ │
+└─────────────────────────────────────────────────────┘
+📝 À faire ensemble
+#	Tâche	Statut
+1	Créer besoins/restants.php	⏳
+2	Ajouter tableau des besoins restants	⏳
+3	Ajouter boutons "Acheter"	⏳
+4	Créer modal d'achat	⏳
+5	Dynamiser modal avec JS	⏳
+6	Créer page récapitulative	⏳
+7	Ajouter bouton actualiser AJAX	⏳
+On commence par la page besoins restants ? Je te donne le code complet de la vue et on avance !
