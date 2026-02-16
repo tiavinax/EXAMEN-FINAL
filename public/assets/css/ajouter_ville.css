@@ -1,4 +1,4 @@
- :root {
+        :root {
             --primary: #003366;
             --secondary: #D32F2F;
             --success: #2E7D32;
@@ -18,15 +18,15 @@
             padding: 0;
         }
 
-        /* Conteneur principal avec bon espacement pour le header fixe */
+        /* Conteneur principal avec espacement pour le header */
         .main-container {
-            padding-top: 160px; /* Ajusté précisément pour le header */
+            padding-top: 160px;
             min-height: 100vh;
             background: #F3F4F6;
         }
 
         .content-wrapper {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 2rem 3rem 2rem;
         }
@@ -155,7 +155,7 @@
 
         /* Form */
         .custom-form {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
@@ -184,7 +184,7 @@
             margin-left: 0.25rem;
         }
 
-        .form-control, .form-select {
+        .form-control {
             border: 1px solid #D1D5DB;
             border-radius: 10px;
             padding: 0.75rem 1rem;
@@ -195,13 +195,13 @@
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
             outline: none;
         }
 
-        .form-control:hover, .form-select:hover {
+        .form-control:hover {
             border-color: var(--primary);
         }
 
@@ -210,27 +210,6 @@
             color: var(--gray);
             margin-top: 0.35rem;
             display: block;
-        }
-
-        .input-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .input-group .form-control {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border-right: none;
-        }
-
-        .input-group-text {
-            background: #F9FAFB;
-            border: 1px solid #D1D5DB;
-            border-left: none;
-            border-radius: 0 10px 10px 0;
-            padding: 0.75rem 1rem;
-            color: var(--gray);
-            font-size: 0.95rem;
         }
 
         /* Alert */
@@ -304,7 +283,8 @@
 
         .form-actions {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
             gap: 1rem;
             margin-top: 2.5rem;
             padding-top: 1.5rem;

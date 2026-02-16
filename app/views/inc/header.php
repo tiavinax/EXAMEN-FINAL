@@ -16,7 +16,7 @@
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Bootstrap Local -->
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/bootstrap/bootstrap-icons/font/bootstrap-icons.css">
@@ -103,22 +103,11 @@
             <div class="container navbar-container">
                 <ul class="nav-menu">
                     <li><a href="/" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">ACCUEIL</a></li>
-                    <li><a href="/#bngrc" class="nav-link">BNGRC <i class="fas fa-chevron-down caret"></i></a></li>
-                    <li><a href="/#news" class="nav-link">ACTUALITÉS <i class="fas fa-chevron-down caret"></i></a></li>
-                    <li><a href="/#alerts" class="nav-link">URGENCES EN COURS</a></li>
-                    <li><a href="/#sensibilisations" class="nav-link">SENSIBILISATIONS</a></li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">GESTION</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/villes/liste" class="dropdown-item">Villes</a></li>
-                            <li><a href="/besoins/liste" class="dropdown-item">Besoins</a></li>
-                            <li><a href="/dons/liste" class="dropdown-item">Faire un dons</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a href="/dashboard" class="dropdown-item">Tableau de bord</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="/villes/liste" class="nav-link">VILLE</i></a></li>
+                    <li><a href="/besoins/liste" class="nav-link">BESOIN</i></a></li>
+                    <li><a href="/dons/liste" class="nav-link">FAIRE UN DONS</a></li>
+                    <li><a href="/dispatch" class="nav-link">DISTRIBUTION</a></li>
+                    <li><a href="/dashboard" class="nav-link">Tableau de bord</a></li>
                     <li><a href="/#contact" class="nav-link">CONTACT</a></li>
                 </ul>
             </div>
