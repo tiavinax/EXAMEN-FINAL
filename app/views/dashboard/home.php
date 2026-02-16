@@ -19,11 +19,7 @@
 
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">BNGRC - Suivi des dons</a>
-        </div>
-    </nav>
+    <?php include __DIR__ . '/../inc/header.php'; ?>
 
     <div class="container mt-4">
         <h1 class="h3 mb-4">Tableau de bord</h1>
@@ -105,6 +101,7 @@
             </div>
         </div>
     </div>
+    <?php include __DIR__ . '/../inc/footer.php'; ?>
 
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script>

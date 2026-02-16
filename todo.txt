@@ -22,6 +22,7 @@ Formulaire d'ajout de ville
 Liste des villes existantes
 
 2. Gestion des besoins par ville
+
 Objectif : Permettre de saisir les besoins (nature, matériaux, argent) pour chaque ville, avec prix unitaire et quantité.
 
 Sous-tâches :
@@ -40,6 +41,7 @@ Formulaire de saisie d’un besoin (avec sélection de la ville)
 Affichage des besoins par ville
 
 3. Gestion des dons
+
 Objectif : Permettre de saisir les dons reçus (nature, matériaux, argent) avec une date de saisie.
 
 Sous-tâches :
@@ -58,6 +60,7 @@ Formulaire de saisie d’un don
 Liste des dons enregistrés
 
 4. Dispatch automatique des dons
+
 Objectif : Simuler l’attribution des dons aux villes selon l’ordre de saisie et les besoins restants.
 
 Sous-tâches :

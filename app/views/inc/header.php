@@ -67,25 +67,3 @@
             </div>
         </nav>
     </header>
-
-    <!-- Hero slider -->
-    <section class="hero" id="home">
-        <div class="hero-slider">
-            <div class="hero-slide active" style="background-image: url('assets/images/img1.png');"></div>
-            <div class="hero-slide" style="background-image: url('assets/images/img2.png');"></div>
-            <div class="hero-slide" style="background-image: url('assets/images/img3.png');"></div>
-        </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-caption">
-            <p class="caption-title">“Izay tsara fiomanana tsy ho tampohin’ny Loza”</p>
-            <p class="caption-sub">« Ceux qui savent se préparer seront à l'abri du danger »<br>
-            “Those who have a good preparedness will be safe from the danger”</p>
-        </div>
-        <div class="hero-nav">
-            <div class="hero-dots">
-                <span class="dot active" data-slide="0"></span>
-                <span class="dot" data-slide="1"></span>
-                <span class="dot" data-slide="2"></span>
-            </div>
-        </div>
-    </section>

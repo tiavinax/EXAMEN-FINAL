@@ -1,14 +1,10 @@
 <?php
-// Include header
-include 'header.php';
+// Inclure depuis le dossier courant
+include __DIR__ . '/inc/header.php';
 ?>
 
-<?php
-// Include home content
-include 'home.php';
-?>
+<!-- Contenu principal -->
+<?php include __DIR__ . '/inc/home.php'; ?>
 
-<?php
-// Include footer
-include 'footer.php';
-?>
+<!-- Footer -->
+<?php include __DIR__ . '/inc/footer.php'; ?>
