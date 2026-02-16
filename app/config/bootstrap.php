@@ -22,7 +22,7 @@ $app = Flight::app();
  * will be returned by the require statement where you can assign it to a var.
  */
 $config = require('config.php');
-
+Flight::set('flight.views.path', __DIR__ . '/../views');
 /*
  * Load the services file.
  * A "service" is basically something special that you want to use in your app.
@@ -61,3 +61,5 @@ $app->start();
 .-._} } | | /  /\  \| .-. \  | |       | |  | { } |/  /\  \ | |     | .--' | {_} || .--' | .--'  }  {  
 `----'  `-' `-'  `-'`-' `-'  `-'       `-'  `-' `-'`-'  `-' `-'     `-'    `-----'`-'    `-'     `--'  
 */
+// Configuration du chemin des vues
+Flight::set('flight.views.path', __DIR__ . '/../views');
