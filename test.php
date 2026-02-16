@@ -1,7 +1,20 @@
 <?php
-// test_base_url.php dans ton dossier public
-echo '<h2>Debug BASE_URL</h2>';
-echo '$_SERVER[\'SCRIPT_NAME\']: ' . $_SERVER['SCRIPT_NAME'] . '<br>';
-echo 'dirname($_SERVER[\'SCRIPT_NAME\']): ' . dirname($_SERVER['SCRIPT_NAME']) . '<br>';
-echo 'rtrim(dirname($_SERVER[\'SCRIPT_NAME\']), \'/\'): ' . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') . '<br>';
-echo 'URL actuelle: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '<br>';
+echo '<h1>Test Simple</h1>';
+
+// Charger la config
+$config = require 'app/config/config.php';
+$dbConfig = $config['database'];
+
+echo '<h2>Configuration DB:</h2>';
+echo 'Host: ' . $dbConfig['host'] . '<br>';
+echo 'Database: ' . $dbConfig['dbname'] . '<br>';
+echo 'User: ' . $dbConfig['user'] . '<br>';
+
+try {
+    $dsn = "mysql:host={$dbConfig['host']};dbname={$dbConfig['dbname']}";
+    $pdo = new PDO($dsn, $dbConfig['user'], $dbConfig['password']);
+
+    echo '<h2 style="color: green;">✓ Connexion réussie!</h2>';
+} catch (Exception $e) {
+    echo '<h2 style="color: red;">✗ Erreur: ' . $e->getMessage() . '</h2>';
+}

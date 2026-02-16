@@ -23,7 +23,10 @@ $router->group('', function (Router $router) use ($app) {
 	$router->get('/', function () use ($app) {
 		$app->render('welcome', ['title' => 'Bienvenue sur Takalo-takalo']);
 	});
-
+	// Route de test connexion
+	$router->get('/test', function () {
+		require_once __DIR__ . '/../../test.php';
+	});
 	// Routes d'authentification
 	$router->get('/login', [AuthController::class, 'showLogin']);
 	$router->post('/login', [AuthController::class, 'login']);
@@ -38,5 +41,4 @@ $router->group('', function (Router $router) use ($app) {
 	$router->get('/modifier-objet/@id', [ObjetController::class, 'showModifierObjet']);
 	$router->post('/modifier-objet/@id', [ObjetController::class, 'updateObjet']);
 	$router->post('/supprimer-objet/@id', [ObjetController::class, 'deleteObjet']);
-	
 }, [SecurityHeadersMiddleware::class]);
