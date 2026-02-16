@@ -1,12 +1,6 @@
 <?php
 
-use app\controllers\AuthController;
-use app\controllers\ObjetController;
-use app\controllers\CatalogueController;
-use app\controllers\EchangeController;
-use app\controllers\HistoriqueController;
-use app\controllers\HistoriqueGlobalController;
-use app\controllers\ProfilController;
+use app\controllers\DashboardController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -21,24 +15,35 @@ $router->group('', function (Router $router) use ($app) {
 
 	// Route d'accueil
 	$router->get('/', function () use ($app) {
-		$app->render('welcome', ['title' => 'Bienvenue sur Takalo-takalo']);
+		$app->render('test', ['title' => 'Bienvenue sur Takalo-takalo']);
 	});
+	
 	// Route de test connexion
 	$router->get('/test', function () {
 		require_once __DIR__ . '/../../test.php';
 	});
-	// Routes d'authentification
-	$router->get('/login', [AuthController::class, 'showLogin']);
-	$router->post('/login', [AuthController::class, 'login']);
-	$router->get('/register', [AuthController::class, 'showRegister']);
-	$router->post('/register', [AuthController::class, 'register']);
-	$router->get('/logout', [AuthController::class, 'logout']);
 
-	// Routes objets
-	$router->get('/mes-objets', [ObjetController::class, 'showMesObjets']);
-	$router->get('/ajouter-objet', [ObjetController::class, 'showAjouterObjet']);
-	$router->post('/ajouter-objet', [ObjetController::class, 'ajouterObjet']);
-	$router->get('/modifier-objet/@id', [ObjetController::class, 'showModifierObjet']);
-	$router->post('/modifier-objet/@id', [ObjetController::class, 'updateObjet']);
-	$router->post('/supprimer-objet/@id', [ObjetController::class, 'deleteObjet']);
+	// ============================================
+	// ROUTES POUR LE PROJET BNGRC
+	// ============================================
+	
+	// Route pour le tableau de bord des dons et besoins
+	$router->get('/dashboard', function () use ($app) {
+
+	$dashBoardControlleur = new DashboardController();
+	$data = $dashBoardControlleur->getData();
+	$stats = $dashBoardControlleur->statistique();
+		$app->render('dashboard/home', [
+			'title' => 'Tableau de bord - Suivi des dons et besoins',
+			'data' => $data,
+			'stats' => $stats
+		]);
+	});
+
+	$router->get('/index', function () use ($app) {
+		$app->render('index', [
+			'title' => 'Tableau de bord - Suivi des dons et besoins'
+		]);
+	});
+
 }, [SecurityHeadersMiddleware::class]);

@@ -1,5 +1,5 @@
 <?php
-namespace app\utils;  // <-- C'est important que ce soit 'utils' et non 'database'
+namespace app\utils;  
 
 use PDO;
 use PDOException;

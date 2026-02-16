@@ -1,17 +1,21 @@
 -- Création de la base de données
-CREATE DATABASE IF NOT EXISTS bngrc_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE bngrc_db;
+-- CREATE DATABASE bngrc_db;
+-- USE bngrc_db;
 
--- Table des villes
-CREATE TABLE IF NOT EXISTS villes (
+-- ============================================
+-- 1. TABLE DES VILLES
+-- ============================================
+CREATE TABLE villes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(100) NOT NULL,
     region VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
--- Table des besoins
-CREATE TABLE IF NOT EXISTS besoins (
+-- ============================================
+-- 2. TABLE DES BESOINS
+-- ============================================
+CREATE TABLE besoins (
     id INT PRIMARY KEY AUTO_INCREMENT,
     ville_id INT NOT NULL,
     libelle VARCHAR(200) NOT NULL,
@@ -20,10 +24,12 @@ CREATE TABLE IF NOT EXISTS besoins (
     prix_unitaire DECIMAL(15,2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (ville_id) REFERENCES villes(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
--- Table des dons
-CREATE TABLE IF NOT EXISTS dons (
+-- ============================================
+-- 3. TABLE DES DONS
+-- ============================================
+CREATE TABLE dons (
     id INT PRIMARY KEY AUTO_INCREMENT,
     donateur VARCHAR(200),
     type ENUM('nature', 'materiaux', 'argent') NOT NULL,
@@ -32,10 +38,12 @@ CREATE TABLE IF NOT EXISTS dons (
     montant DECIMAL(15,2),
     date_don TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
--- Table des attributions (dispatch)
-CREATE TABLE IF NOT EXISTS attributions (
+-- ============================================
+-- 4. TABLE DES ATTRIBUTIONS
+-- ============================================
+CREATE TABLE attributions (
     id INT PRIMARY KEY AUTO_INCREMENT,
     don_id INT NOT NULL,
     besoin_id INT NOT NULL,
@@ -46,9 +54,36 @@ CREATE TABLE IF NOT EXISTS attributions (
     FOREIGN KEY (don_id) REFERENCES dons(id) ON DELETE CASCADE,
     FOREIGN KEY (besoin_id) REFERENCES besoins(id) ON DELETE CASCADE,
     FOREIGN KEY (ville_id) REFERENCES villes(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+);
 
--- Insertion des données de test
+-- ============================================
+-- DONNÉES DE TEST
+-- ============================================
+
+-- Villes
+INSERT INTO villes (nom, region) VALUES 
+('Antananarivo', 'Analamanga'),
+('Toamasina', 'Analanjirofo'),
+('Mahajanga', 'Boeny');
+
+-- Besoins des villes
+INSERT INTO besoins (ville_id, libelle, type, quantite, prix_unitaire) VALUES
+(1, 'Riz', 'nature', 100, 2500),
+(1, 'Tôle ondulée', 'materiaux', 50, 15000),
+(2, 'Eau potable', 'nature', 500, 500),
+(3, 'Couvertures', 'nature', 200, 5000);
+
+-- Dons reçus
+INSERT INTO dons (donateur, type, libelle, quantite, montant) VALUES
+('Croix Rouge', 'nature', 'Riz 50kg', 50, NULL),
+('Donateur privé', 'materiaux', 'Tôle', 30, NULL),
+('Collecte', 'argent', 'Aide financière', NULL, 500000);
+
+-- Attributions (distribution)
+INSERT INTO attributions (don_id, besoin_id, ville_id, quantite_attribuee, montant_attribue) VALUES
+(1, 1, 1, 50, NULL),
+(2, 2, 1, 30, NULL),
+(3, 4, 3, NULL, 500000);-- Insertion des données de test
 INSERT INTO villes (nom, region) VALUES
 ('Antananarivo', 'Analamanga'),
 ('Toamasina', 'Atsinanana'),

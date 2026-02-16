@@ -1,0 +1,139 @@
+/* ==========================================
+   VARIABLES GLOBALES
+   ========================================== */
+:root {
+    --primary-color: #1e3a8a;
+    --primary-dark: #172554;
+    --secondary-color: #dc2626;
+    --tertiary-color: #059669;
+    --accent-yellow: #f59e0b;
+    --light-bg: #f8fafc;
+    --border-color: #e2e8f0;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================
+   RESET & BASE STYLES
+   ========================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--primary-color); text-decoration: none; transition: color 0.3s ease; }
+a:hover { color: var(--secondary-color); }
+
+/* ==========================================
+   SECTIONS & CONTAINERS
+   ========================================== */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 4rem 0; }
+.section.light { background: var(--light-bg); }
+
+.section-title {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 3rem;
+    position: relative;
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary-color) 0%, var(--tertiary-color) 100%);
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .container { padding: 0 1rem; }
+    .section { padding: 2rem 0; }
+    .section-title { font-size: 1.8rem; }
+}
+
+@media (max-width: 480px) {
+    .section-title { font-size: 1.5rem; margin-bottom: 2rem; }
+}
+
+/* (Page-specific CSS now in header.css, home.css, footer.css) */
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+}
+
+.scale-in {
+    animation: scaleIn 0.6s ease-out;
+}
