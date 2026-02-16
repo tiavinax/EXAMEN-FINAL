@@ -1,42 +1,84 @@
 <?php
 
-use app\controllers\AuthController;
-use app\controllers\ObjetController;
-use app\controllers\CatalogueController;
-use app\controllers\EchangeController;
-use app\controllers\HistoriqueController;
-use app\controllers\HistoriqueGlobalController;
-use app\controllers\ProfilController;
-use app\middlewares\SecurityHeadersMiddleware;
-use flight\Engine;
-use flight\net\Router;
+// Route d'accueil - Redirige vers dashboard
+Flight::route('GET /', function() {
+    Flight::redirect('/dashboard');
+});
 
-/** 
- * @var Router $router 
- * @var Engine $app
- */
+// Dashboard avec le layout BNGRC
+Flight::route('GET /dashboard', function() {
+    // Données simulées pour le dashboard
+    $stats = [
+        'villes_sinistrees' => 8,
+        'total_besoins' => 150000000,
+        'total_dons' => 85000000,
+        'pourcentage_couvert' => 57
+    ];
+    
+    $villes = [
+        ['id' => 1, 'region_nom' => 'Analamanga', 'ville_nom' => 'Antananarivo', 'population' => 1500000, 'nb_besoins' => 4, 'montant_besoins' => 150000000, 'total_attribue' => 85000000],
+        ['id' => 2, 'region_nom' => 'Diana', 'ville_nom' => 'Antsiranana', 'population' => 150000, 'nb_besoins' => 3, 'montant_besoins' => 45000000, 'total_attribue' => 30000000],
+        ['id' => 3, 'region_nom' => 'Sava', 'ville_nom' => 'Sambava', 'population' => 120000, 'nb_besoins' => 2, 'montant_besoins' => 25000000, 'total_attribue' => 10000000],
+        ['id' => 4, 'region_nom' => 'Itasy', 'ville_nom' => 'Miarinarivo', 'population' => 90000, 'nb_besoins' => 1, 'montant_besoins' => 10000000, 'total_attribue' => 10000000]
+    ];
+    
+    // Utiliser le chemin absolu depuis la racine
+    ob_start();
+    include __DIR__ . '/../views/dashboard/index.php';
+    $content = ob_get_clean();
+    
+    Flight::render('layout', ['title' => 'Tableau de bord - BNGRC', 'content' => $content]);
+});
 
-// This wraps all routes in the group with the SecurityHeadersMiddleware
-$router->group('', function (Router $router) use ($app) {
+// Détail d'une ville
+Flight::route('GET /dashboard/ville/@id:[0-9]+', function($id) {
+    ob_start();
+    echo "<div class='bngrc-card'>";
+    echo "<div class='bngrc-card-header'>";
+    echo "<i class='fas fa-city'></i> Détail de la ville #$id";
+    echo "</div>";
+    echo "<div class='bngrc-card-body'>";
+    echo "<p>Informations détaillées pour la ville sélectionnée.</p>";
+    echo "<a href='/dashboard' class='btn btn-bngrc-outline'>";
+    echo "<i class='fas fa-arrow-left'></i> Retour au tableau de bord";
+    echo "</a>";
+    echo "</div>";
+    echo "</div>";
+    $content = ob_get_clean();
+    
+    Flight::render('layout', ['title' => "Détail ville #$id - BNGRC", 'content' => $content]);
+});
 
-	// Route d'accueil
-	$router->get('/', function () use ($app) {
-		$app->render('welcome', ['title' => 'Bienvenue sur Takalo-takalo']);
-	});
+// Autres routes
+Flight::route('GET /login', function() {
+    $content = "<div class='bngrc-card'><div class='bngrc-card-header'><i class='fas fa-sign-in-alt'></i> Connexion</div><div class='bngrc-card-body'>Page de connexion (à venir)</div></div>";
+    Flight::render('layout', ['title' => 'Connexion - BNGRC', 'content' => $content]);
+});
 
-	// Routes d'authentification
-	$router->get('/login', [AuthController::class, 'showLogin']);
-	$router->post('/login', [AuthController::class, 'login']);
-	$router->get('/register', [AuthController::class, 'showRegister']);
-	$router->post('/register', [AuthController::class, 'register']);
-	$router->get('/logout', [AuthController::class, 'logout']);
+Flight::route('GET /villes', function() {
+    $content = "<div class='bngrc-card'><div class='bngrc-card-header'><i class='fas fa-city'></i> Villes</div><div class='bngrc-card-body'><p>Liste des villes (en construction...)</p></div></div>";
+    Flight::render('layout', ['title' => 'Villes - BNGRC', 'content' => $content]);
+});
 
-	// Routes objets
-	$router->get('/mes-objets', [ObjetController::class, 'showMesObjets']);
-	$router->get('/ajouter-objet', [ObjetController::class, 'showAjouterObjet']);
-	$router->post('/ajouter-objet', [ObjetController::class, 'ajouterObjet']);
-	$router->get('/modifier-objet/@id', [ObjetController::class, 'showModifierObjet']);
-	$router->post('/modifier-objet/@id', [ObjetController::class, 'updateObjet']);
-	$router->post('/supprimer-objet/@id', [ObjetController::class, 'deleteObjet']);
-	
-}, [SecurityHeadersMiddleware::class]);
+Flight::route('GET /besoins', function() {
+    $content = "<div class='bngrc-card'><div class='bngrc-card-header'><i class='fas fa-hand-holding-heart'></i> Besoins</div><div class='bngrc-card-body'><p>Liste des besoins (en construction...)</p></div></div>";
+    Flight::render('layout', ['title' => 'Besoins - BNGRC', 'content' => $content]);
+});
+
+Flight::route('GET /dons', function() {
+    $content = "<div class='bngrc-card'><div class='bngrc-card-header'><i class='fas fa-gift'></i> Dons</div><div class='bngrc-card-body'><p>Liste des dons (en construction...)</p></div></div>";
+    Flight::render('layout', ['title' => 'Dons - BNGRC', 'content' => $content]);
+});
+
+Flight::route('GET /attributions', function() {
+    $content = "<div class='bngrc-card'><div class='bngrc-card-header'><i class='fas fa-exchange-alt'></i> Attributions</div><div class='bngrc-card-body'><p>Liste des attributions (en construction...)</p></div></div>";
+    Flight::render('layout', ['title' => 'Attributions - BNGRC', 'content' => $content]);
+});
+
+Flight::route('GET /rapports', function() {
+    $content = "<div class='bngrc-card'><div class='bngrc-card-header'><i class='fas fa-chart-bar'></i> Rapports</div><div class='bngrc-card-body'><p>Génération de rapports (en construction...)</p></div></div>";
+    Flight::render('layout', ['title' => 'Rapports - BNGRC', 'content' => $content]);
+});
+Flight::route('GET /don_ajouter', function() {
+    require __DIR__ . '/../views/don_ajouter.php';
+});
