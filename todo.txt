@@ -3,6 +3,7 @@ Objectif final global :
 Développer une application web de gestion des besoins et des dons pour les sinistrés, avec un tableau de bord affichant les besoins par ville et les dons attribués, en respectant l'ordre de priorité des dons par date de saisie.
 
 1. Gestion des villes
+
 Objectif : Permettre d'ajouter et de lister les villes où se trouvent les sinistrés.
 
 Sous-tâches :
@@ -20,6 +21,15 @@ Front-end :
 Formulaire d'ajout de ville
 
 Liste des villes existantes
+
+
+
+
+
+
+
+
+
 
 2. Gestion des besoins par ville
 
