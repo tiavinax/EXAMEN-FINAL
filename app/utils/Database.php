@@ -1,11 +1,9 @@
 <?php
-namespace app\database;
+namespace app\utils;  
 
 use PDO;
 use PDOException;
-    // LOGIN = ETU003955;
-    // MDP = ZkRvFN0a;
-    // BASE_NAME = db_s2_ETU003955;
+
 class Database
 {
     private static $instance = null;
@@ -13,7 +11,8 @@ class Database
     public static function getConnection()
     {
         if (self::$instance === null) {
-            $config = include __DIR__ . '/../config/config.php';
+            // Vérifier le chemin du fichier config
+            $config = require __DIR__ . '/../config/config.php';
             $dbConfig = $config['database'];
             
             try {

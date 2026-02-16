@@ -1,4 +1,11 @@
 <?php
+// Autoloader de Composer
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+// Inclure l'utilitaire de base de données
+require_once __DIR__ . '/../utils/Database.php';
+
+// Inclure le contrôleur et modèle
 
 /*
  * This is the file called bootstrap who's job is to make sure that all the
@@ -7,6 +14,7 @@
  */
 $ds = DIRECTORY_SEPARATOR;
 require(__DIR__ . $ds . '..' . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php');
+
 if(file_exists(__DIR__. $ds . 'config.php') === false) {
 	Flight::halt(500, 'Config file not found. Please create a config.php file in the app/config directory to get started.');
 }
