@@ -11,7 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <style>
         /* ===== VARIABLES ===== */
         :root {
@@ -26,7 +25,6 @@
             --info-light: #E6F0F9;
             --warning: #ED6C02;
             --warning-light: #FEF3E2;
-            --dark: #1A1A1A;
             --gray-50: #F9FAFB;
             --gray-100: #F3F4F6;
             --gray-200: #E5E7EB;
@@ -42,7 +40,6 @@
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         /* ===== RESET & BASE ===== */
@@ -60,7 +57,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--gradient-primary);
+            background: var(--white);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -86,25 +83,12 @@
 
         /* ===== CARD PRINCIPALE ===== */
         .welcome-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
+            background: var(--white);
             border-radius: 48px;
             padding: 3rem;
-            box-shadow: var(--shadow-xl), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--gray-200);
             width: 100%;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* ===== HEADER ===== */
@@ -124,16 +108,16 @@
 
         .logo-item {
             padding: 1rem 2.5rem;
-            background: var(--white);
+            background: var(--gray-50);
             border-radius: 100px;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             border: 1px solid var(--gray-200);
             transition: transform 0.2s;
         }
 
         .logo-item:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
         }
 
         .logo-item img {
@@ -185,13 +169,13 @@
         }
 
         .stat-item {
-            background: var(--white);
+            background: var(--gray-50);
             padding: 0.75rem 1.75rem;
             border-radius: 100px;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             border: 1px solid var(--gray-200);
             font-size: 0.95rem;
             transition: transform 0.2s;
@@ -199,7 +183,7 @@
 
         .stat-item:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
         }
 
         .stat-item i {
@@ -394,48 +378,47 @@
         .btn-primary {
             background: var(--primary);
             color: var(--white);
-            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
         }
 
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 51, 102, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3);
         }
 
         .btn-success {
             background: var(--success);
             color: var(--white);
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
         }
 
         .btn-success:hover {
             background: #1E5A22;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);
+            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
         }
 
         .btn-info {
             background: var(--info);
             color: var(--white);
-            box-shadow: 0 4px 12px rgba(2, 136, 209, 0.3);
+            box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2);
         }
 
         .btn-info:hover {
             background: #026AA2;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(2, 136, 209, 0.4);
+            box-shadow: 0 6px 16px rgba(2, 136, 209, 0.3);
         }
 
         /* ===== FOOTER ===== */
         .site-footer {
             flex-shrink: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            color: var(--white);
+            background: var(--gray-50);
+            color: var(--gray-600);
             padding: 1.5rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--gray-200);
         }
 
         .footer-content {
@@ -452,7 +435,6 @@
         .footer-content p {
             margin: 0;
             font-size: 0.9rem;
-            opacity: 0.9;
         }
 
         .footer-links {
@@ -462,22 +444,22 @@
         }
 
         .footer-links a {
-            color: var(--white);
+            color: var(--gray-600);
             text-decoration: none;
             font-size: 0.9rem;
-            opacity: 0.8;
-            transition: opacity 0.2s;
+            transition: color 0.2s;
         }
 
         .footer-links a:hover {
-            opacity: 1;
+            color: var(--primary);
         }
 
         .footer-version {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--gray-200);
             padding: 0.25rem 1rem;
             border-radius: 100px;
             font-size: 0.8rem;
+            color: var(--gray-700);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -569,8 +551,6 @@
     </style>
 </head>
 <body>
-
-
     <div class="site-wrapper">
         <div class="main-container">
             <div class="welcome-card">
@@ -690,9 +670,6 @@
         </div>
     </div>
 
-    <?php include __DIR__ . '/inc/footer.php'; ?>
-
-    <!-- Footer personnalisé pour l'accueil -->
     <footer class="site-footer">
         <div class="footer-content">
             <p>&copy; 2023-2026 BNGRC – Tous droits réservés</p>
