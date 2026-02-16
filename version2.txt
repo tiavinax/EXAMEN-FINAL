@@ -1,0 +1,141 @@
+ Objectif global de la V2
+Permettre d'utiliser les dons en argent pour acheter des besoins en nature et matériaux, avec des frais supplémentaires, et simuler le résultat avant validation.
+
+🧠 Explication détaillée fonction par fonction
+1. Achat via les dons en argent
+"On peut acheter via les dons en argent les besoins en nature et en matériaux selon les prix unitaires"
+
+Ce que ça veut dire :
+
+Les dons en argent ne sont pas directement attribués aux besoins en argent seulement.
+
+On peut convertir un don en argent pour satisfaire des besoins en nature (riz, huile) ou matériaux (tôle, clous).
+
+Le calcul se fait sur la base du prix unitaire du besoin.
+
+Exemple concret :
+
+Besoin : 100 kg de riz à 2500 Ar/kg → besoin total = 250 000 Ar
+
+Don en argent disponible : 300 000 Ar
+
+On peut acheter 100 kg de riz avec 250 000 Ar du don.
+
+
+
+2. Frais d'achat configurables
+"Il y a un frais d'achat de x% configurable. (ex: achat de 100 avec 10%, donc achat de 110)"
+
+Ce que ça veut dire :
+
+Un pourcentage de frais s'applique sur chaque achat.
+
+Ce pourcentage est configurable (probablement dans un fichier de config ou une table en base).
+
+Le coût réel de l'achat = (quantité × prix unitaire) × (1 + frais/100)
+
+Exemple avec frais de 10% :
+
+Besoin : 100 kg riz × 2500 Ar = 250 000 Ar
+
+Frais 10% = 25 000 Ar
+
+Total déduit du don = 275 000 Ar
+
+3. Page des besoins restants comme point de départ
+"On utilise la page des besoins restants pour faire les achats."
+
+Ce que ça veut dire :
+
+L'utilisateur part de la liste des besoins non satisfaits (reste > 0).
+
+Pour chaque besoin, on propose un bouton "Acheter" ou une interface pour choisir un don en argent et lancer l'achat.
+
+4. Règle de non-dédoublement
+"Il y a un message d'erreur si l'achat existe encore dans les dons restants."
+
+Ce que ça veut dire :
+
+On ne peut pas acheter deux fois le même besoin avec le même don si le besoin a déjà été satisfait ailleurs.
+
+Il faut vérifier que le besoin n'est pas déjà couvert par une autre attribution/achat.
+
+Exemple :
+
+Un don de 500 000 Ar est utilisé pour acheter du riz pour Tana.
+
+On ne peut pas réutiliser ce même don pour acheter autre chose tant qu'il reste de l'argent non utilisé.
+
+5. Page de simulation avec deux boutons
+"Page de simulation : il y a un bouton simuler qui permet de voir le résultat et un bouton validation qui dispatch vraiment les dons."
+
+Ce que ça veut dire :
+
+Bouton	Action
+Simuler	Affiche un aperçu de ce qui se passerait (sans modifier la base) : montant déduit, frais, reste, besoin satisfait ou non
+Valider	Exécute vraiment l'achat : crée une attribution, met à jour les restes, déduit du don
+6. Page de récapitulation avec Ajax
+"Créer une page de récapitulation (avec un bouton actualiser en Ajax) qui affiche : les besoins totaux et satisfaits en montant et le montant des besoins restants."
+
+Ce que ça veut dire :
+
+Une page résumé global avec des cartes ou graphiques.
+
+Données à afficher :
+
+Besoins totaux : somme de tous les besoins (quantité × prix unitaire)
+
+Besoins satisfaits : somme de tout ce qui a été attribué (en valeur monétaire)
+
+Besoins restants : la différence
+
+Bouton "Actualiser" qui recharge les données sans recharger la page (via Ajax/Fetch).
+
+📊 Schéma récapitulatif
+text
+                    ┌─────────────────┐
+                    │  Dons en argent │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │  Achat avec     │
+                    │  frais x%       │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+┌───────────────────┤ Besoins restants ├──────────────────┐
+│                   └────────┬────────┘                   │
+│                            │                            │
+│                    ┌───────▼───────┐                   │
+│                    │  Simulation   │                   │
+│                    │  ▼ Aperçu     │                   │
+│                    └───────┬───────┘                   │
+│                            │                            │
+│                    ┌───────▼───────┐                   │
+│                    │  Validation   │                   │
+│                    │  ▼ Attribution│                   │
+│                    └───────────────┘                   │
+│                                                         │
+└──────────────┬──────────────────────────────┬──────────┘
+               │                              │
+    ┌──────────▼─────────┐          ┌─────────▼─────────┐
+    │ Récapitulatif      │          │ Mise à jour Ajax  │
+    │ - Totaux           │◄────────►│ - Bouton refresh  │
+    │ - Satisfaits       │          │ - Données dynamiques
+    │ - Restants         │          │                   │
+    └────────────────────┘          └───────────────────┘
+🧩 Nouvelles tables à créer (probablement)
+Table	Rôle
+achats	Enregistrer les achats effectués (don_id, besoin_id, montant, frais, date)
+config	Stocker le pourcentage de frais (valeur modifiable)
+Ou alors on peut utiliser la table attributions existante avec un champ type_attribution ('don' ou 'achat').
+
+✅ Résumé des fonctionnalités V2
+#	Fonctionnalité	Description
+1	Achat avec dons argent	Utiliser l'argent pour satisfaire besoins nature/matériaux
+2	Frais configurables	Pourcentage ajouté au coût d'achat
+3	Interface besoins restants	Point de départ pour les achats
+4	Contrôle de doublon	Empêcher de réutiliser un don déjà utilisé
+5	Simulation	Aperçu avant validation
+6	Validation	Exécution réelle de l'achat
+7	Récapitulatif Ajax	Résumé global avec mise à jour dynamique
