@@ -4,6 +4,7 @@ use app\controllers\DashboardController;
 use app\controllers\DonController;
 use app\controllers\BesoinController;
 use app\controllers\VilleController;
+use app\controllers\DispatchController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -70,4 +71,13 @@ $router->group('', function (Router $router) use ($app) {
 	$router->get('/villes/modifier/@id', [VilleController::class, 'modifier']);
 	$router->post('/villes/update/@id', [VilleController::class, 'update']);
 	$router->get('/villes/supprimer/@id', [VilleController::class, 'supprimer']);
+
+	// Gestion du dispatch
+	$router->get('/dispatch', [DispatchController::class, 'index']);
+	$router->get('/dispatch/run', [DispatchController::class, 'run']);
+	$router->get('/dispatch/redistribute', [DispatchController::class, 'redistribute']);
+
+	// API endpoints (optionnels)
+	$router->get('/api/attributions', [DispatchController::class, 'apiGetAttributions']);
+	$router->post('/api/dispatch/run', [DispatchController::class, 'apiRun']);
 }, [SecurityHeadersMiddleware::class]);

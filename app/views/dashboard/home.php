@@ -3,6 +3,8 @@
 $title = "Tableau de bord - BNGRC";
 $page_css = ['homelia']; // homelia.css au lieu de dashboard.css
 include __DIR__ . '/../inc/header.php';
+// var_dump($data);
+
 ?>
 
 <!-- Styles spécifiques au dashboard (si nécessaire) -->
