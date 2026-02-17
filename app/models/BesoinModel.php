@@ -15,9 +15,37 @@ class BesoinModel
         $this->db = Database::getConnection();
     }
 
+    /**
+     * Récupérer tous les besoins avec les détails (ville, attributions)
+     */
+    public function getAllWithDetails()
+    {
+        $sql = "SELECT b.*, 
+                   v.nom as ville_nom, 
+                   v.region,
+                   COALESCE(SUM(
+                       CASE 
+                           WHEN b.type = 'argent' THEN a.montant_attribue
+                           ELSE a.quantite_attribuee
+                       END
+                   ), 0) as total_attribue,
+                   CASE 
+                       WHEN b.type = 'argent' THEN b.quantite - COALESCE(SUM(a.montant_attribue), 0)
+                       ELSE b.quantite - COALESCE(SUM(a.quantite_attribuee), 0)
+                   END as reste
+            FROM besoins b
+            LEFT JOIN villes v ON b.ville_id = v.id
+            LEFT JOIN attributions a ON b.id = a.besoin_id
+            GROUP BY b.id, v.nom, v.region
+            ORDER BY b.created_at DESC";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function getAll()
     {
-        $sql = "SELECT * FROM besoins ORDER BY date_don DESC";
+        $sql = "SELECT * FROM besoins ORDER BY created_at DESC";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
@@ -136,7 +164,8 @@ class BesoinModel
     /**
      * Récupérer les besoins non satisfaits avec reste > 0
      */
-    public function getBesoinsRestants() {
+    public function getBesoinsRestants()
+    {
         $sql = "SELECT b.*, v.nom AS ville_nom, v.region,
                    COALESCE(SUM(
                        CASE 
@@ -161,22 +190,22 @@ class BesoinModel
     }
 
     /**
- * Calculer la valeur totale de tous les besoins (quantité × prix_unitaire)
- */
-public function getTotalValeurBesoins()
-{
-    $sql = "SELECT SUM(quantite * prix_unitaire) AS total FROM besoins";
-    $stmt = $this->db->query($sql);
-    $result = $stmt->fetch(PDO::FETCH_OBJ);
-    return $result->total ?? 0;
-}
+     * Calculer la valeur totale de tous les besoins (quantité × prix_unitaire)
+     */
+    public function getTotalValeurBesoins()
+    {
+        $sql = "SELECT SUM(quantite * prix_unitaire) AS total FROM besoins";
+        $stmt = $this->db->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        return $result->total ?? 0;
+    }
 
-/**
- * Récapitulatif par ville
- */
-public function getRecapParVille()
-{
-    $sql = "SELECT 
+    /**
+     * Récapitulatif par ville
+     */
+    public function getRecapParVille()
+    {
+        $sql = "SELECT 
                 v.id,
                 v.nom AS ville_nom,
                 v.region,
@@ -192,8 +221,8 @@ public function getRecapParVille()
             LEFT JOIN attributions a ON b.id = a.besoin_id
             GROUP BY v.id
             ORDER BY v.nom";
-    
-    $stmt = $this->db->query($sql);
-    return $stmt->fetchAll(PDO::FETCH_OBJ);
-}
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }

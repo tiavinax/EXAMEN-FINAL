@@ -1,5 +1,7 @@
 <?php
 // /app/views/accueil.php
+$title = "BNGRC - Accueil";
+include __DIR__ . '/inc/header.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -11,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         /* ===== VARIABLES ===== */
         :root {
@@ -40,6 +43,7 @@
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-dark));
         }
 
         /* ===== RESET & BASE ===== */
@@ -49,46 +53,39 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--white);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.5;
+            background: var(--gray-50);
             color: var(--gray-900);
+            line-height: 1.5;
         }
 
-        /* ===== LAYOUT PRINCIPAL ===== */
-        .site-wrapper {
-            flex: 1 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 2rem 1rem;
-        }
-
+        /* ===== Ajustement pour le header fixe ===== */
         .main-container {
-            width: 100%;
+            padding-top: 180px;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
             max-width: 1280px;
             margin: 0 auto;
+            padding: 2rem 2rem 3rem 2rem;
         }
 
         /* ===== CARD PRINCIPALE ===== */
         .welcome-card {
             background: var(--white);
-            border-radius: 48px;
+            border-radius: 32px;
             padding: 3rem;
-            box-shadow: var(--shadow-xl);
+            box-shadow: var(--shadow-lg);
             border: 1px solid var(--gray-200);
             width: 100%;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== HEADER ===== */
@@ -112,12 +109,13 @@
             border-radius: 100px;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--gray-200);
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
         }
 
         .logo-item:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
         }
 
         .logo-item img {
@@ -169,21 +167,22 @@
         }
 
         .stat-item {
-            background: var(--gray-50);
+            background: linear-gradient(135deg, var(--white), var(--gray-50));
             padding: 0.75rem 1.75rem;
-            border-radius: 100px;
+           
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-md);
+           
             font-size: 0.95rem;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
         }
 
         .stat-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
 
         .stat-item i {
@@ -206,6 +205,13 @@
             font-weight: 600;
             margin-left: 0.5rem;
             letter-spacing: 0.5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
         }
 
         /* ===== SEARCH ===== */
@@ -227,6 +233,7 @@
             color: var(--gray-400);
             font-size: 1.1rem;
             pointer-events: none;
+            transition: color 0.2s;
         }
 
         .search-container input {
@@ -236,7 +243,7 @@
             border-radius: 60px;
             font-size: 1rem;
             font-family: 'Inter', sans-serif;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             background: var(--white);
             box-shadow: var(--shadow-sm);
         }
@@ -245,6 +252,10 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1);
+        }
+
+        .search-container input:focus + i {
+            color: var(--primary);
         }
 
         .search-container input::placeholder {
@@ -261,7 +272,7 @@
 
         .module-card {
             background: var(--white);
-            border-radius: 28px;
+            border-radius: 24px;
             padding: 1.75rem;
             text-decoration: none;
             color: inherit;
@@ -297,17 +308,17 @@
         .module-icon {
             width: 64px;
             height: 64px;
-            border-radius: 20px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.25rem;
             font-size: 1.75rem;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
         }
 
         .module-card:hover .module-icon {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
         }
 
         .module-icon.bg-primary-soft { background: var(--primary-light); color: var(--primary); }
@@ -326,7 +337,7 @@
         .module-description {
             color: var(--gray-500);
             font-size: 0.9rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-bottom: 1.25rem;
         }
 
@@ -335,13 +346,14 @@
             align-items: center;
             gap: 0.5rem;
             color: var(--primary);
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.95rem;
-            transition: gap 0.2s;
+            transition: all 0.2s;
         }
 
         .module-card:hover .module-link {
             gap: 0.75rem;
+            color: var(--secondary);
         }
 
         .module-link i {
@@ -352,12 +364,13 @@
             transform: translateX(4px);
         }
 
-        /* ===== QUICK LINKS ===== */
-        .quick-links {
+        /* ===== QUICK ACTIONS ===== */
+        .quick-actions {
             display: flex;
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
+            margin-top: 2rem;
         }
 
         .btn {
@@ -369,97 +382,103 @@
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             border: none;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
+            box-shadow: var(--shadow-md);
         }
 
         .btn-primary {
             background: var(--primary);
             color: var(--white);
-            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
         }
 
         .btn-primary:hover {
             background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-success {
             background: var(--success);
             color: var(--white);
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
         }
 
         .btn-success:hover {
             background: #1E5A22;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
         .btn-info {
             background: var(--info);
             color: var(--white);
-            box-shadow: 0 4px 12px rgba(2, 136, 209, 0.2);
         }
 
         .btn-info:hover {
             background: #026AA2;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(2, 136, 209, 0.3);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* ===== FOOTER ===== */
-        .site-footer {
-            flex-shrink: 0;
-            width: 100%;
-            background: var(--gray-50);
-            color: var(--gray-600);
-            padding: 1.5rem 0;
+        /* ===== FEATURES SECTION ===== */
+        .features-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
             border-top: 1px solid var(--gray-200);
         }
 
-        .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
+        .features-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 2rem;
         }
 
-        .footer-content p {
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        .footer-links {
-            display: flex;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            flex-wrap: wrap;
         }
 
-        .footer-links a {
-            color: var(--gray-600);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
+        .feature-item {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: var(--gray-50);
+            transition: all 0.3s ease;
         }
 
-        .footer-links a:hover {
+        .feature-item:hover {
+            transform: translateY(-4px);
+            background: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            background: var(--primary-light);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--primary);
+            font-size: 1.5rem;
         }
 
-        .footer-version {
-            background: var(--gray-200);
-            padding: 0.25rem 1rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            color: var(--gray-700);
+        .feature-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--gray-500);
+            font-size: 0.9rem;
         }
 
         /* ===== RESPONSIVE ===== */
@@ -467,16 +486,19 @@
             .modules-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            .site-wrapper {
-                padding: 1.5rem 1rem;
+            .content-wrapper {
+                padding: 1rem 1rem 2rem 1rem;
             }
 
             .welcome-card {
                 padding: 2rem 1.5rem;
-                border-radius: 32px;
+                border-radius: 24px;
             }
 
             .portal-title {
@@ -496,7 +518,7 @@
                 gap: 1rem;
             }
 
-            .quick-links {
+            .quick-actions {
                 flex-direction: column;
             }
 
@@ -513,18 +535,12 @@
 
             .stat-item {
                 width: 100%;
-                max-width: 300px;
+                max-width: 350px;
                 justify-content: center;
             }
 
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-                padding: 0 1.5rem;
-            }
-
-            .footer-links {
-                justify-content: center;
+            .features-grid {
+                grid-template-columns: 1fr;
                 gap: 1rem;
             }
         }
@@ -551,22 +567,14 @@
     </style>
 </head>
 <body>
-    <div class="site-wrapper">
-        <div class="main-container">
-            <div class="welcome-card">
-                <!-- Header -->
+    <?php include __DIR__ . '/inc/header.php'; ?>
+
+    <div class="main-container">
+        <div class="content-wrapper">
+         
+                <!-- Header avec logos -->
                 <div class="portal-header">
-                    <div class="logo-container">
-                        <div class="logo-item">
-                            <img src="/assets/images/republique.png" alt="République de Madagascar">
-                        </div>
-                        <div class="logo-item">
-                            <img src="/assets/images/interieure.png" alt="Ministère de l'Intérieur">
-                        </div>
-                        <div class="logo-item">
-                            <img src="/assets/images/bngrc.png" alt="BNGRC">
-                        </div>
-                    </div>
+                
                     <h1 class="portal-title">
                         <span>BNGRC</span> Portal
                     </h1>
@@ -575,7 +583,7 @@
                     </p>
                 </div>
 
-                <!-- Stats -->
+                <!-- Statistiques en temps réel -->
                 <div class="stats-row">
                     <div class="stat-item">
                         <i class="fas fa-city"></i>
@@ -592,7 +600,7 @@
                     </div>
                 </div>
 
-                <!-- Search -->
+                <!-- Barre de recherche -->
                 <div class="search-section">
                     <div class="search-container">
                         <i class="fas fa-search"></i>
@@ -600,7 +608,7 @@
                     </div>
                 </div>
 
-                <!-- Modules Grid -->
+                <!-- Modules principaux -->
                 <div class="modules-grid">
                     <a href="/dashboard" class="module-card">
                         <div class="module-icon bg-primary-soft">
@@ -651,36 +659,54 @@
                     </a>
                 </div>
 
-                <!-- Quick Actions -->
-                <div class="quick-links">
+                <!-- Actions rapides -->
+                <div class="quick-actions">
                     <a href="/besoins/ajouter" class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-plus-circle"></i>
                         Nouveau besoin
                     </a>
                     <a href="/dons/ajouter" class="btn btn-success">
                         <i class="fas fa-gift"></i>
                         Nouveau don
                     </a>
-                    <a href="/dispatch" class="btn btn-info">
-                        <i class="fas fa-rocket"></i>
-                        Dispatch
+                    <a href="/achats/besoins-restants" class="btn btn-info">
+                        <i class="fas fa-shopping-cart"></i>
+        Achat
                     </a>
+                </div>
+
+                <!-- Section fonctionnalités -->
+                <div class="features-section">
+                    <h2 class="features-title">Fonctionnalités principales</h2>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4 class="feature-title">Suivi en temps réel</h4>
+                            <p class="feature-description">Visualisez l'évolution des besoins et des dons</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h4 class="feature-title">Dispatch automatique</h4>
+                            <p class="feature-description">Attribution intelligente des dons aux besoins</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <h4 class="feature-title">Rapports détaillés</h4>
+                            <p class="feature-description">Générez des rapports personnalisés</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="site-footer">
-        <div class="footer-content">
-            <p>&copy; 2023-2026 BNGRC – Tous droits réservés</p>
-            <div class="footer-links">
-                <a href="/mentions-legales">Mentions légales</a>
-                <a href="/confidentialite">Confidentialité</a>
-                <a href="/contact">Contact</a>
-            </div>
-            <div class="footer-version">Version 2.0</div>
-        </div>
-    </footer>
+    <?php include __DIR__ . '/inc/footer.php'; ?>
 
     <script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -695,6 +721,19 @@
                 }
             });
         }
+
+        // Animation au scroll
+        window.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.module-card, .feature-item');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight - 100;
+                if(isVisible) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
     </script>
 </body>
 </html>

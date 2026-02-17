@@ -206,4 +206,55 @@ class AttributionModel
         $result = $stmt->fetch(PDO::FETCH_OBJ);
         return $result->total ?? 0;
     }
+
+    // ======================================================================
+/**
+ * Récupérer toutes les attributions
+ */
+public function getAll()
+{
+    $sql = "SELECT * FROM attributions ORDER BY date_attribution DESC";
+    $stmt = $this->db->query($sql);
+    return $stmt->fetchAll(\PDO::FETCH_OBJ);
+}
+
+/**
+ * Récupérer les attributions par besoin
+ */
+public function getByBesoin($besoinId)
+{
+    $sql = "SELECT a.*, d.donateur, d.type as don_type, d.libelle as don_libelle
+            FROM attributions a
+            LEFT JOIN dons d ON a.don_id = d.id
+            WHERE a.besoin_id = ?
+            ORDER BY a.date_attribution DESC";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([$besoinId]);
+    return $stmt->fetchAll(\PDO::FETCH_OBJ);
+}
+
+/**
+ * Récupérer le total attribué pour un don spécifique
+ */
+public function getTotalByDon($donId)
+{
+    $sql = "SELECT 
+                COALESCE(SUM(
+                    CASE 
+                        WHEN d.type = 'argent' THEN a.montant_attribue
+                        ELSE a.quantite_attribuee
+                    END
+                ), 0) as total
+            FROM attributions a
+            JOIN dons d ON a.don_id = d.id
+            WHERE a.don_id = ?";
+    
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute([$donId]);
+    $result = $stmt->fetch(\PDO::FETCH_OBJ);
+    
+    return $result ? floatval($result->total) : 0;
+}
+
 }

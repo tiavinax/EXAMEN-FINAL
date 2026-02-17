@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 /*
  * FlightPHP Framework
@@ -24,5 +26,13 @@
    Cessna 402  (Wings)
    by Dick Williams, rjw1@tyrell.net
 */
+
+
 $ds = DIRECTORY_SEPARATOR;
-require(__DIR__. $ds . '..' . $ds . 'app' . $ds . 'config' . $ds . 'bootstrap.php');
+
+// Charger les helpers en premier
+require_once __DIR__ . $ds . '..' . $ds . 'app' . $ds . 'helpers.php';
+
+// Puis charger le bootstrap
+require(__DIR__. $ds . '..' . $ds . 'app' . $ds . 'config' . $ds . 'bootstrap.php'); 
+?>

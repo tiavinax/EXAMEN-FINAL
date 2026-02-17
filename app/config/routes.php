@@ -19,16 +19,15 @@ use flight\net\Router;
 // This wraps all routes in the group with the SecurityHeadersMiddleware
 $router->group('', function (Router $router) use ($app) {
 
-    // Route d'accueil - localhost:8000
-    Flight::route('/', function () use ($app) {
-        // Utiliser le système de templates comme les autres routes
+    // Route d'accueil
+    $router->get('/', function () use ($app) {
         $app->render('accueil', [
             'title' => 'BNGRC - Accueil'
         ]);
     });
 
-    // Route de test (optionnelle) - redirige vers l'accueil
-    Flight::route('/test', function () use ($app) {
+    // Route de test (optionnelle)
+    $router->get('/test', function () use ($app) {
         $app->render('accueil', [
             'title' => 'BNGRC - Accueil'
         ]);
@@ -39,14 +38,12 @@ $router->group('', function (Router $router) use ($app) {
     // ============================================
 
     // Route pour le tableau de bord des dons et besoins
-    $router->get('/dashboard', function () use ($app) {
-        $dashBoardControlleur = new DashboardController();
-        $data = $dashBoardControlleur->getData();
-        $stats = $dashBoardControlleur->statistique();
-        $app->render('dashboard/home', [
-            'title' => 'Tableau de bord - Suivi des dons et besoins',
-            'data' => $data,
-            'stats' => $stats
+    $router->get('/dashboard/reset', [DashboardController::class, 'reset']);
+    $router->get('/dashboard', [DashboardController::class, 'index']);
+    $router->get('/dashboard/api/data', [DashboardController::class, 'getDataApi']);
+    $router->get('/index', function () use ($app) {
+        $app->render('index', [
+            'title' => 'Tableau de bord - Suivi des dons et besoins'
         ]);
     });
 
@@ -82,6 +79,10 @@ $router->group('', function (Router $router) use ($app) {
     $router->get('/dispatch', [DispatchController::class, 'index']);
     $router->get('/dispatch/run', [DispatchController::class, 'run']);
     $router->get('/dispatch/redistribute', [DispatchController::class, 'redistribute']);
+    $router->get('/dispatch/api/get-attributions', [DispatchController::class, 'apiGetAttributions']);
+    // Routes AJAX pour le dispatch
+    $router->get('/dispatch/run-ajax', [DispatchController::class, 'runAjax']);
+    $router->get('/dispatch/redistribute-ajax', [DispatchController::class, 'redistributeAjax']);
 
     // API endpoints (optionnels)
     $router->get('/api/attributions', [DispatchController::class, 'apiGetAttributions']);
@@ -94,7 +95,7 @@ $router->group('', function (Router $router) use ($app) {
     $router->post('/achats/valider', [AchatController::class, 'valider']);
     $router->get('/achats/historique', [AchatController::class, 'historique']);
 
-    // Dans config/routes.php
+    // Récapitulatif
     $router->get('/recapitulatif', [RecapitulatifController::class, 'index']);
     $router->get('/recapitulatif/data', [RecapitulatifController::class, 'getData']);
 }, [SecurityHeadersMiddleware::class]);

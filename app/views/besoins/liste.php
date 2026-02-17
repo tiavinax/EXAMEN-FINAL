@@ -1,7 +1,7 @@
 <?php 
-// dashboard/liste_besoins.php
-$title = "Liste des besoins - BNGRC";
-$page_css = ['liste_besoins'];
+// villes/liste.php
+$title = "Liste des villes - BNGRC";
+$page_css = ['liste_villes'];
 include __DIR__ . '/../inc/header.php';
 ?>
 
@@ -11,34 +11,62 @@ include __DIR__ . '/../inc/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title ?></title>
-    <!-- Les CSS sont déjà dans header.php (Bootstrap, Font Awesome, etc.) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* Ajustements spécifiques */
+        /* ===== VARIABLES ===== */
         :root {
             --primary: #003366;
+            --primary-dark: #002244;
+            --primary-light: #e8f0fe;
             --secondary: #D32F2F;
+            --secondary-light: #ffebee;
             --success: #2E7D32;
+            --success-light: #e8f5e9;
             --info: #0288D1;
+            --info-light: #e1f5fe;
             --warning: #ED6C02;
+            --warning-light: #fff3e0;
             --danger: #D32F2F;
-            --dark: #1A1A1A;
-            --light: #F5F7FA;
-            --gray: #6B7280;
-            --border: #E5E7EB;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #F3F4F6;
-            margin: 0;
-            padding: 0;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
         }
 
-        /* Ajustement principal - plus de chevauchement */
+        /* ===== LAYOUT PRINCIPAL ===== */
         .main-container {
-            padding-top: 160px; /* Ajusté pour le header fixe */
+            padding-top: 160px;
             min-height: 100vh;
-            background: #F3F4F6;
+            background: var(--gray-50);
         }
 
         .content-wrapper {
@@ -47,9 +75,9 @@ include __DIR__ . '/../inc/header.php';
             padding: 0 2rem 3rem 2rem;
         }
 
-        /* Page Header */
+        /* ===== PAGE HEADER ===== */
         .page-header {
-            background: white;
+            background: var(--white);
             border-radius: 20px;
             padding: 1.5rem 2rem;
             margin-bottom: 2rem;
@@ -58,21 +86,20 @@ include __DIR__ . '/../inc/header.php';
             align-items: center;
             flex-wrap: wrap;
             gap: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-200);
         }
 
         .page-header-left h1 {
             font-size: 1.875rem;
-            font-weight: 600;
-            color: #111827;
+            font-weight: 700;
+            color: var(--gray-900);
             margin: 0 0 0.5rem 0;
             letter-spacing: -0.02em;
         }
 
         .page-header-left h1 span {
-            color: var(--secondary);
-            font-weight: 700;
+            color: var(--primary);
             position: relative;
         }
 
@@ -83,12 +110,12 @@ include __DIR__ . '/../inc/header.php';
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, var(--secondary), transparent);
+            background: linear-gradient(90deg, var(--primary), transparent);
             border-radius: 2px;
         }
 
         .page-header-left p {
-            color: var(--gray);
+            color: var(--gray-500);
             font-size: 0.95rem;
             margin: 0;
             display: flex;
@@ -96,14 +123,13 @@ include __DIR__ . '/../inc/header.php';
             gap: 0.5rem;
         }
 
-        .page-header-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
+        .page-header-left p i {
+            color: var(--primary);
+            font-size: 0.5rem;
         }
 
         .breadcrumb {
-            background: #F3F4F6;
+            background: var(--gray-100);
             padding: 0.6rem 1.2rem;
             border-radius: 40px;
             font-size: 0.9rem;
@@ -114,37 +140,42 @@ include __DIR__ . '/../inc/header.php';
             color: var(--primary);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--primary-dark);
         }
 
         .breadcrumb-item.active {
-            color: var(--gray);
+            color: var(--gray-500);
         }
 
         .btn-primary {
             background: var(--primary);
-            color: white;
+            color: var(--white);
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 40px;
             font-size: 0.95rem;
-            font-weight: 500;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
             transition: all 0.2s;
-            box-shadow: 0 4px 10px rgba(0,51,102,0.2);
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
             cursor: pointer;
         }
 
         .btn-primary:hover {
-            background: #002244;
+            background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,51,102,0.3);
-            color: white;
+            box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3);
+            color: var(--white);
         }
 
-        /* Alerts */
+        /* ===== ALERTS ===== */
         .alert-custom {
             border-radius: 12px;
             padding: 1rem 1.5rem;
@@ -155,87 +186,89 @@ include __DIR__ . '/../inc/header.php';
             font-size: 0.95rem;
             border-left-width: 4px;
             border-left-style: solid;
+            box-shadow: var(--shadow-sm);
         }
 
         .alert-custom.success {
-            background: #F0FDF4;
+            background: var(--success-light);
             border-left-color: var(--success);
-            color: #166534;
+            color: var(--success);
+            border: 1px solid rgba(46, 125, 50, 0.2);
         }
 
         .alert-custom.error {
-            background: #FEF2F2;
+            background: var(--secondary-light);
             border-left-color: var(--danger);
-            color: #991B1B;
+            color: var(--danger);
+            border: 1px solid rgba(211, 47, 47, 0.2);
         }
 
         .alert-custom i {
             font-size: 1.25rem;
         }
 
-        /* Stats Cards */
+        /* ===== STATS CARDS ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: white;
-            border-radius: 16px;
+            background: var(--white);
+            border-radius: 20px;
             padding: 1.5rem;
             display: flex;
             align-items: center;
             gap: 1rem;
-            border: 1px solid var(--border);
-            transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
         }
 
         .stat-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 20px -8px rgba(0,0,0,0.1);
-            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
         .stat-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
+            font-size: 1.8rem;
         }
 
-        .bg-primary-soft { background: #E8EEF5; color: var(--primary); }
-        .bg-success-soft { background: #E8F3E9; color: var(--success); }
-        .bg-warning-soft { background: #FEF3E2; color: var(--warning); }
-        .bg-info-soft { background: #E6F0F9; color: var(--info); }
+        .bg-primary-soft { background: var(--primary-light); color: var(--primary); }
+        .bg-success-soft { background: var(--success-light); color: var(--success); }
+        .bg-info-soft { background: var(--info-light); color: var(--info); }
 
         .stat-content {
             flex: 1;
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: #111827;
+            color: var(--gray-900);
             line-height: 1.2;
             margin-bottom: 0.2rem;
         }
 
         .stat-label {
             font-size: 0.85rem;
-            color: var(--gray);
+            color: var(--gray-500);
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
 
-        /* Filters */
+        /* ===== FILTERS ===== */
         .filters-section {
-            background: white;
+            background: var(--white);
             border-radius: 16px;
             padding: 1.25rem 1.5rem;
             margin-bottom: 2rem;
@@ -244,40 +277,25 @@ include __DIR__ . '/../inc/header.php';
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid var(--gray-200);
+            box-shadow: var(--shadow-sm);
         }
 
-        .filters-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #F9FAFB;
-            padding: 0.5rem 1rem 0.5rem 1.2rem;
+        .form-select {
+            border: 1.5px solid var(--gray-200);
             border-radius: 40px;
-            border: 1px solid var(--border);
-        }
-
-        .filter-item i {
-            color: var(--gray);
+            padding: 0.6rem 2rem 0.6rem 1rem;
             font-size: 0.9rem;
-        }
-
-        .filter-item select {
-            border: none;
-            background: transparent;
-            color: #111827;
-            font-size: 0.9rem;
-            font-weight: 500;
-            outline: none;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
             cursor: pointer;
-            padding-right: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1);
         }
 
         .search-box {
@@ -290,40 +308,45 @@ include __DIR__ . '/../inc/header.php';
             left: 1.2rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--gray);
+            color: var(--gray-400);
             font-size: 0.9rem;
+            pointer-events: none;
         }
 
         .search-box input {
             width: 100%;
             padding: 0.7rem 1rem 0.7rem 2.8rem;
-            border: 1px solid var(--border);
+            border: 1.5px solid var(--gray-200);
             border-radius: 40px;
             font-size: 0.9rem;
-            background: #F9FAFB;
+            font-family: 'Inter', sans-serif;
             transition: all 0.2s;
+            background: var(--white);
         }
 
         .search-box input:focus {
             outline: none;
             border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+            box-shadow: 0 0 0 4px rgba(0, 51, 102, 0.1);
         }
 
-        /* Table */
+        .search-box input::placeholder {
+            color: var(--gray-400);
+        }
+
+        /* ===== TABLE CONTAINER ===== */
         .table-container {
-            background: white;
-            border-radius: 20px;
-            border: 1px solid var(--border);
+            background: var(--white);
+            border-radius: 24px;
+            border: 1px solid var(--gray-200);
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: var(--shadow-md);
         }
 
         .table-header {
             padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            background: #F9FAFB;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -336,17 +359,18 @@ include __DIR__ . '/../inc/header.php';
         }
 
         .table-title i {
-            color: var(--secondary);
+            color: var(--primary);
             font-size: 1.2rem;
         }
 
         .table-title h3 {
             font-size: 1.1rem;
             font-weight: 600;
-            color: #111827;
+            color: var(--gray-900);
             margin: 0;
         }
 
+        /* ===== TABLE ===== */
         .table-responsive {
             overflow-x: auto;
         }
@@ -360,19 +384,19 @@ include __DIR__ . '/../inc/header.php';
         th {
             text-align: left;
             padding: 1rem 1.5rem;
-            background: #F9FAFB;
-            color: #374151;
+            background: var(--gray-50);
+            color: var(--gray-700);
             font-weight: 600;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.4px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--gray-200);
         }
 
         td {
             padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            color: #111827;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-900);
             vertical-align: middle;
         }
 
@@ -381,31 +405,32 @@ include __DIR__ . '/../inc/header.php';
         }
 
         tr:hover td {
-            background: #F9FAFB;
+            background: var(--gray-50);
         }
 
-        /* Badges */
+        /* ===== BADGES ===== */
         .badge-id {
-            background: #F3F4F6;
+            background: var(--gray-100);
             padding: 0.3rem 0.8rem;
             border-radius: 30px;
             font-size: 0.8rem;
             font-weight: 600;
-            color: #374151;
+            color: var(--gray-700);
             display: inline-block;
-            border: 1px solid var(--border);
+            border: 1px solid var(--gray-200);
         }
 
         .badge-ville {
-            background: #F3F4F6;
+            background: var(--primary-light);
             padding: 0.3rem 1rem;
             border-radius: 30px;
             font-size: 0.85rem;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            color: #111827;
-            border: 1px solid var(--border);
+            color: var(--primary);
+            font-weight: 600;
+            border: 1px solid rgba(0, 51, 102, 0.1);
         }
 
         .badge-ville i {
@@ -413,78 +438,67 @@ include __DIR__ . '/../inc/header.php';
             font-size: 0.8rem;
         }
 
-        .badge-ville small {
-            color: var(--gray);
-            font-size: 0.75rem;
-        }
-
-        .badge-type {
+        .badge-region {
+            background: var(--gray-100);
             padding: 0.3rem 1rem;
             border-radius: 30px;
             font-size: 0.85rem;
-            font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
+            color: var(--gray-700);
+            font-weight: 500;
         }
 
-        .badge-type.nature {
-            background: #E8F3E9;
-            color: #166534;
+        .badge-region i {
+            color: var(--primary);
         }
 
-        .badge-type.materiaux {
-            background: #F3F4F6;
-            color: #4B5563;
+        /* ===== DATE INFO ===== */
+        .date-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-700);
+            font-size: 0.9rem;
         }
 
-        .badge-type.argent {
-            background: #FEF3E2;
-            color: #9A5B00;
+        .date-info i {
+            color: var(--gray-400);
+            font-size: 0.85rem;
         }
 
-        /* Montants */
-        .montant {
-            font-weight: 600;
+        .date-info small {
+            color: var(--gray-500);
+            font-size: 0.8rem;
+            margin-left: 0.25rem;
         }
 
-        .montant.nature { color: #166534; }
-        .montant.materiaux { color: #4B5563; }
-        .montant.argent { color: #B45309; }
-        .montant.total { color: var(--primary); font-weight: 700; }
-
-        .montant small {
-            font-size: 0.7rem;
-            color: var(--gray);
-            font-weight: 400;
-            margin-left: 2px;
-        }
-
-        /* Actions */
+        /* ===== ACTION BUTTONS ===== */
         .action-buttons {
             display: flex;
             gap: 0.5rem;
         }
 
         .btn-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: white;
-            color: #6B7280;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--gray-200);
+            background: var(--white);
+            color: var(--gray-600);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            transition: all 0.15s;
-            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-size: 0.95rem;
         }
 
         .btn-icon:hover {
             background: var(--primary);
             border-color: var(--primary);
-            color: white;
+            color: var(--white);
         }
 
         .btn-icon.warning:hover {
@@ -497,11 +511,11 @@ include __DIR__ . '/../inc/header.php';
             border-color: var(--danger);
         }
 
-        /* Table Footer */
+        /* ===== TABLE FOOTER ===== */
         .table-footer {
             padding: 1rem 1.5rem;
-            border-top: 1px solid var(--border);
-            background: #F9FAFB;
+            border-top: 1px solid var(--gray-200);
+            background: var(--gray-50);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -520,28 +534,29 @@ include __DIR__ . '/../inc/header.php';
 
         .page-link {
             padding: 0.4rem 0.8rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: #6B7280;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            color: var(--gray-600);
             text-decoration: none;
             font-size: 0.9rem;
-            transition: all 0.15s;
+            transition: all 0.2s;
             display: block;
+            background: var(--white);
         }
 
         .page-item.active .page-link {
             background: var(--primary);
             border-color: var(--primary);
-            color: white;
+            color: var(--white);
         }
 
         .page-link:hover {
             background: var(--primary);
             border-color: var(--primary);
-            color: white;
+            color: var(--white);
         }
 
-        /* Empty State */
+        /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -549,23 +564,23 @@ include __DIR__ . '/../inc/header.php';
 
         .empty-state i {
             font-size: 4rem;
-            color: #D1D5DB;
+            color: var(--gray-300);
             margin-bottom: 1rem;
         }
 
         .empty-state h5 {
             font-size: 1.25rem;
             font-weight: 600;
-            color: #111827;
+            color: var(--gray-900);
             margin-bottom: 0.5rem;
         }
 
         .empty-state p {
-            color: #6B7280;
+            color: var(--gray-500);
             margin-bottom: 1.5rem;
         }
 
-        /* Responsive */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -582,9 +597,8 @@ include __DIR__ . '/../inc/header.php';
                 align-items: flex-start;
             }
 
-            .page-header-right {
-                width: 100%;
-                justify-content: space-between;
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
 
             .filters-section {
@@ -596,8 +610,8 @@ include __DIR__ . '/../inc/header.php';
                 width: 100%;
             }
 
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .form-select {
+                width: 100% !important;
             }
 
             .table-header {
@@ -606,8 +620,30 @@ include __DIR__ . '/../inc/header.php';
                 gap: 1rem;
             }
 
+            .table-footer {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
             .action-buttons {
                 flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header-left h1 {
+                font-size: 1.5rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            th, td {
+                padding: 0.75rem 1rem;
+                white-space: nowrap;
             }
         }
     </style>
@@ -620,23 +656,23 @@ include __DIR__ . '/../inc/header.php';
             <div class="page-header">
                 <div class="page-header-left">
                     <h1>
-                        Liste des <span>besoins</span>
+                        Liste des <span>villes</span>
                     </h1>
                     <p>
-                        <i class="fas fa-circle" style="color: var(--secondary); font-size: 0.5rem;"></i>
-                        Gérez et consultez tous les besoins d'aide humanitaire
+                        <i class="fas fa-circle"></i>
+                        Gérez les villes et leurs informations
                     </p>
                 </div>
-                <div class="page-header-right">
+                <div class="d-flex gap-3 align-items-center">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Besoins</li>
+                            <li class="breadcrumb-item active">Villes</li>
                         </ol>
                     </nav>
-                    <a href="/besoins/ajouter" class="btn-primary">
+                    <a href="/EXAMEN-FINAL/public/villes/ajouter" class="btn-primary">
                         <i class="fas fa-plus"></i>
-                        Nouveau besoin
+                        Nouvelle ville
                     </a>
                 </div>
             </div>
@@ -657,81 +693,59 @@ include __DIR__ . '/../inc/header.php';
             <?php endif; ?>
 
             <!-- Statistiques -->
-            <?php if(!empty($besoins)): 
-                $totalNature = count(array_filter($besoins, fn($b) => $b->type === 'nature'));
-                $totalMateriaux = count(array_filter($besoins, fn($b) => $b->type === 'materiaux'));
-                $totalArgent = count(array_filter($besoins, fn($b) => $b->type === 'argent'));
-                $montantTotal = array_reduce($besoins, function($carry, $b) {
-                    return $carry + ($b->quantite * $b->prix_unitaire);
-                }, 0);
+            <?php if(!empty($villes)): 
+                $totalVilles = count($villes);
+                $totalRegions = count(array_unique(array_column($villes, 'region')));
+                $dateRecent = max(array_column($villes, 'created_at'));
             ?>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon bg-primary-soft">
-                        <i class="fas fa-hand-holding-heart"></i>
+                        <i class="fas fa-city"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-value"><?= count($besoins) ?></div>
-                        <div class="stat-label">Total besoins</div>
+                        <div class="stat-value"><?= $totalVilles ?></div>
+                        <div class="stat-label">Total villes</div>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon bg-success-soft">
-                        <i class="fas fa-seedling"></i>
+                        <i class="fas fa-map-marked-alt"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-value"><?= $totalNature ?></div>
-                        <div class="stat-label">Nature</div>
+                        <div class="stat-value"><?= $totalRegions ?></div>
+                        <div class="stat-label">Régions</div>
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon" style="background: #F3F4F6; color: #4B5563;">
-                        <i class="fas fa-tools"></i>
+                    <div class="stat-icon bg-info-soft">
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
                     <div class="stat-content">
-                        <div class="stat-value"><?= $totalMateriaux ?></div>
-                        <div class="stat-label">Matériaux</div>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-warning-soft">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-value"><?= number_format($montantTotal, 0, ',', ' ') ?> Ar</div>
-                        <div class="stat-label">Valeur totale</div>
+                        <div class="stat-value"><?= date('d/m/Y', strtotime($dateRecent)) ?></div>
+                        <div class="stat-label">Dernière mise à jour</div>
                     </div>
                 </div>
             </div>
 
             <!-- Filtres -->
             <div class="filters-section">
-                <div class="filters-group">
-                    <div class="filter-item">
-                        <i class="fas fa-filter"></i>
-                        <select id="typeFilter">
-                            <option value="">Tous types</option>
-                            <option value="nature">Nature</option>
-                            <option value="materiaux">Matériaux</option>
-                            <option value="argent">Argent</option>
-                        </select>
-                    </div>
-                    <div class="filter-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <select id="regionFilter">
-                            <option value="">Toutes régions</option>
-                            <?php 
-                            $regions = array_unique(array_column($besoins, 'region'));
-                            foreach($regions as $region): 
-                            ?>
-                                <option value="<?= htmlspecialchars($region) ?>"><?= htmlspecialchars($region) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
+                <div class="d-flex gap-3 align-items-center">
+                    <span class="text-muted"><i class="fas fa-filter me-1"></i>Filtrer :</span>
+                    <select class="form-select" style="width: auto;" id="regionFilter">
+                        <option value="">Toutes les régions</option>
+                        <?php 
+                        $regions = array_unique(array_column($villes, 'region'));
+                        sort($regions);
+                        foreach($regions as $region): 
+                        ?>
+                            <option value="<?= htmlspecialchars($region) ?>"><?= htmlspecialchars($region) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Rechercher..." id="searchInput">
+                    <input type="text" placeholder="Rechercher une ville..." id="searchInput">
                 </div>
             </div>
             <?php endif; ?>
@@ -741,7 +755,7 @@ include __DIR__ . '/../inc/header.php';
                 <div class="table-header">
                     <div class="table-title">
                         <i class="fas fa-list-ul"></i>
-                        <h3>Liste des besoins</h3>
+                        <h3>Liste des villes</h3>
                     </div>
                 </div>
 
@@ -750,69 +764,58 @@ include __DIR__ . '/../inc/header.php';
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Ville / Région</th>
-                                <th>Type</th>
-                                <th>Libellé</th>
-                                <th>Quantité</th>
-                                <th>Prix unitaire</th>
-                                <th>Total</th>
+                                <th>Ville</th>
+                                <th>Région</th>
+                                <th>Date création</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody">
-                            <?php if(empty($besoins)): ?>
+                            <?php if(empty($villes)): ?>
                                 <tr>
-                                    <td colspan="8" class="empty-state">
-                                        <i class="fas fa-inbox"></i>
-                                        <h5>Aucun besoin enregistré</h5>
-                                        <p>Commencez par ajouter votre premier besoin</p>
-                                        <a href="/besoins/ajouter" class="btn-primary">
-                                            <i class="fas fa-plus"></i> Ajouter un besoin
+                                    <td colspan="5" class="empty-state">
+                                        <i class="fas fa-city"></i>
+                                        <h5>Aucune ville enregistrée</h5>
+                                        <p>Commencez par ajouter votre première ville</p>
+                                        <a href="/villes/ajouter" class="btn-primary">
+                                            <i class="fas fa-plus"></i> Ajouter une ville
                                         </a>
                                     </td>
                                 </tr>
                             <?php else: ?>
-                                <?php foreach($besoins as $besoin): ?>
-                                <tr class="besoin-row" data-type="<?= $besoin->type ?>" data-region="<?= htmlspecialchars($besoin->region) ?>">
+                                <?php foreach($villes as $ville): ?>
+                                <tr class="ville-row" data-region="<?= htmlspecialchars($ville->region) ?>">
                                     <td>
-                                        <span class="badge-id">#<?= str_pad($besoin->id, 4, '0', STR_PAD_LEFT) ?></span>
+                                        <span class="badge-id">#<?= str_pad($ville->id, 3, '0', STR_PAD_LEFT) ?></span>
                                     </td>
                                     <td>
                                         <span class="badge-ville">
                                             <i class="fas fa-map-marker-alt"></i>
-                                            <?= htmlspecialchars($besoin->ville_nom) ?>
-                                            <small>(<?= htmlspecialchars($besoin->region) ?>)</small>
+                                            <?= htmlspecialchars($ville->nom) ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge-type <?= $besoin->type ?>">
-                                            <i class="fas <?= $besoin->type === 'nature' ? 'fa-seedling' : ($besoin->type === 'materiaux' ? 'fa-tools' : 'fa-coins') ?>"></i>
-                                            <?= ucfirst($besoin->type) ?>
+                                        <span class="badge-region">
+                                            <i class="fas fa-map-signs"></i>
+                                            <?= htmlspecialchars($ville->region) ?>
                                         </span>
                                     </td>
-                                    <td><?= htmlspecialchars($besoin->libelle) ?></td>
-                                    <td class="montant <?= $besoin->type ?>">
-                                        <?php if($besoin->type === 'argent'): ?>
-                                            <?= number_format($besoin->quantite, 0, ',', ' ') ?><small>Ar</small>
-                                        <?php else: ?>
-                                            <?= number_format($besoin->quantite) ?><small><?= $besoin->type === 'nature' ? 'kg' : 'u' ?></small>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="montant">
-                                        <?= number_format($besoin->prix_unitaire, 0, ',', ' ') ?><small>Ar</small>
-                                    </td>
-                                    <td class="montant total">
-                                        <strong><?= number_format($besoin->quantite * $besoin->prix_unitaire, 0, ',', ' ') ?><small>Ar</small></strong>
+                                    <td>
+                                        <div class="date-info">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <?= date('d/m/Y', strtotime($ville->created_at)) ?>
+                                            <small><?= date('H:i', strtotime($ville->created_at)) ?></small>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="action-buttons">
-                                            <a href="/besoins/modifier/<?= $besoin->id ?>" class="btn-icon warning" title="Modifier">
+                                            <a href="/EXAMEN-FINAL/public/villes/modifier/<?= $ville->id ?>" class="btn-icon warning" title="Modifier">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <a href="/besoins/supprimer/<?= $besoin->id ?>" 
+                                            <a href="/EXAMEN-FINAL/public/villes/supprimer/<?= $ville->id ?>" 
                                                class="btn-icon danger" 
                                                title="Supprimer"
-                                               onclick="return confirm('Supprimer ce besoin ?')">
+                                               onclick="return confirm('Supprimer cette ville ? Tous les besoins associés seront également supprimés.')">
                                                 <i class="fas fa-trash"></i>
                                             </a>
                                         </div>
@@ -824,10 +827,10 @@ include __DIR__ . '/../inc/header.php';
                     </table>
                 </div>
 
-                <?php if(!empty($besoins)): ?>
+                <?php if(!empty($villes)): ?>
                 <div class="table-footer">
                     <div class="text-muted">
-                        <i class="fas fa-database"></i> <?= count($besoins) ?> besoin(s)
+                        <i class="fas fa-database"></i> <?= count($villes) ?> ville(s) · <?= $totalRegions ?> région(s)
                     </div>
                     <nav>
                         <ul class="pagination">
@@ -846,14 +849,14 @@ include __DIR__ . '/../inc/header.php';
 
     <?php include __DIR__ . '/../inc/footer.php'; ?>
     
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="<?= asset_url('js/bootstrap.bundle.min.js') ?>"></script>
+
     <script>
-        // Recherche en temps réel
         const searchInput = document.getElementById('searchInput');
         if(searchInput) {
             searchInput.addEventListener('keyup', function() {
                 const search = this.value.toLowerCase();
-                const rows = document.querySelectorAll('.besoin-row');
+                const rows = document.querySelectorAll('.ville-row');
                 
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
@@ -862,39 +865,15 @@ include __DIR__ . '/../inc/header.php';
             });
         }
 
-        // Filtre par type
-        const typeFilter = document.getElementById('typeFilter');
-        if(typeFilter) {
-            typeFilter.addEventListener('change', function() {
-                const type = this.value;
-                const rows = document.querySelectorAll('.besoin-row');
-                
-                rows.forEach(row => {
-                    const match = !type || row.dataset.type === type;
-                    const currentDisplay = window.getComputedStyle(row).display;
-                    if(!match) {
-                        row.style.display = 'none';
-                    } else {
-                        row.style.display = '';
-                    }
-                });
-            });
-        }
-
-        // Filtre par région
         const regionFilter = document.getElementById('regionFilter');
         if(regionFilter) {
             regionFilter.addEventListener('change', function() {
                 const region = this.value;
-                const rows = document.querySelectorAll('.besoin-row');
+                const rows = document.querySelectorAll('.ville-row');
                 
                 rows.forEach(row => {
                     const match = !region || row.dataset.region === region;
-                    if(!match) {
-                        row.style.display = 'none';
-                    } else {
-                        row.style.display = '';
-                    }
+                    row.style.display = match ? '' : 'none';
                 });
             });
         }

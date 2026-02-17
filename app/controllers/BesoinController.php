@@ -76,7 +76,7 @@ class BesoinController
     {
         $besoinModel = new BesoinModel();
         $besoin = $besoinModel->getById($id);
-        
+
         if (!$besoin) {
             $_SESSION['error'] = "Besoin non trouvé";
             Flight::redirect('/besoins/liste');
@@ -124,7 +124,7 @@ class BesoinController
     public function supprimer($id)
     {
         $besoinModel = new BesoinModel();
-        
+
         if ($besoinModel->delete($id)) {
             $_SESSION['success'] = "Besoin supprimé";
         } else {

@@ -43,29 +43,34 @@ class AchatController
         $besoinModel = new BesoinModel();
         $donModel = new DonModel();
         $parametreModel = new ParametreModel();
+        $attributionModel = new AttributionModel(); // Ajoute ça
 
+        // 1. Récupérer le besoin de base
         $besoin = $besoinModel->getById($besoinId);
-        $dons = $donModel->getDonsArgentDisponibles();
-        $frais = $parametreModel->getFraisAchat();
 
         if (!$besoin) {
             header('HTTP/1.0 404 Not Found');
             echo json_encode(['error' => 'Besoin non trouvé']);
-            return;
+            return; 
         }
 
-        // Récupérer le reste du besoin
-        $besoinAvecReste = $besoinModel->getBesoinsRestants();
-        $besoinData = null;
-        foreach ($besoinAvecReste as $b) {
-            if ($b->id == $besoinId) {
-                $besoinData = $b;
-                break;
-            }
-        }
+        // 2. Calculer le reste nous-mêmes
+        $totalAttribue = $attributionModel->getTotalByBesoin($besoinId);
+        $reste = $besoin->quantite - $totalAttribue;
+
+        // 3. Créer un objet besoin avec toutes les infos
+        $besoinData = $besoin;
+        $besoinData->reste = $reste;
+        $besoinData->total_attribue = $totalAttribue;
+        $besoinData->ville_nom = ''; // Tu peux récupérer le nom de la ville si besoin
+
+        // 4. Récupérer les dons et frais
+        $dons = $donModel->getDonsArgentDisponibles();
+        $frais = $parametreModel->getFraisAchat();
 
         header('Content-Type: application/json');
         echo json_encode([
+            'success' => true,
             'besoin' => $besoinData,
             'dons' => $dons,
             'frais' => $frais
