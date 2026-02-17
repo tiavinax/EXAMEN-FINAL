@@ -1,4 +1,4 @@
-<?php 
+<?php
 // dashboard/ajouter_besoin.php
 $title = "Ajouter un besoin - BNGRC";
 $page_css = ['ajouter_besoin'];
@@ -7,6 +7,7 @@ include __DIR__ . '/../inc/header.php';
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,9 +15,9 @@ include __DIR__ . '/../inc/header.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Variables */
-       
     </style>
 </head>
+
 <body>
 
     <div class="main-container">
@@ -42,10 +43,11 @@ include __DIR__ . '/../inc/header.php';
             </div>
 
             <!-- Message d'erreur -->
-            <?php if(isset($_SESSION['error'])): ?>
+            <?php if (isset($_SESSION['error'])): ?>
                 <div class="alert-custom">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+                    <?= $_SESSION['error'];
+                    unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
@@ -70,7 +72,7 @@ include __DIR__ . '/../inc/header.php';
                         </p>
                     </div>
 
-                    <form action="/besoins/save" method="POST" class="custom-form">
+                    <form action="/ETU003955/EXAMEN-FINAL/public/besoins/save" method="POST" class="custom-form">
                         <!-- Ville -->
                         <div class="form-group">
                             <label for="ville_id" class="form-label">
@@ -79,7 +81,7 @@ include __DIR__ . '/../inc/header.php';
                             </label>
                             <select class="form-select" id="ville_id" name="ville_id" required>
                                 <option value="" selected disabled>Sélectionner une ville</option>
-                                <?php foreach($villes as $ville): ?>
+                                <?php foreach ($villes as $ville): ?>
                                     <option value="<?= $ville->id ?>">
                                         <?= htmlspecialchars($ville->nom) ?> (<?= htmlspecialchars($ville->region) ?>)
                                     </option>
@@ -109,12 +111,12 @@ include __DIR__ . '/../inc/header.php';
                                 <i class="fas fa-font"></i>
                                 Libellé <span class="text-danger">*</span>
                             </label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="libelle" 
-                                   name="libelle" 
-                                   placeholder="Ex: Riz, Tôles, Aide financière..." 
-                                   required>
+                            <input type="text"
+                                class="form-control"
+                                id="libelle"
+                                name="libelle"
+                                placeholder="Ex: Riz, Tôles, Aide financière..."
+                                required>
                             <small class="form-text">Décrivez précisément le besoin</small>
                         </div>
 
@@ -124,12 +126,12 @@ include __DIR__ . '/../inc/header.php';
                                 <i class="fas fa-calculator"></i>
                                 Quantité <span class="text-danger">*</span>
                             </label>
-                            <input type="number" 
-                                   step="0.01" 
-                                   class="form-control" 
-                                   id="quantite" 
-                                   name="quantite" 
-                                   required>
+                            <input type="number"
+                                step="0.01"
+                                class="form-control"
+                                id="quantite"
+                                name="quantite"
+                                required>
                             <small class="form-text" id="quantiteHelp">
                                 Entrez la quantité nécessaire
                             </small>
@@ -142,12 +144,12 @@ include __DIR__ . '/../inc/header.php';
                                 Prix unitaire (Ar) <span class="text-danger">*</span>
                             </label>
                             <div class="input-group">
-                                <input type="number" 
-                                       step="0.01" 
-                                       class="form-control" 
-                                       id="prix_unitaire" 
-                                       name="prix_unitaire" 
-                                       required>
+                                <input type="number"
+                                    step="0.01"
+                                    class="form-control"
+                                    id="prix_unitaire"
+                                    name="prix_unitaire"
+                                    required>
                                 <span class="input-group-text">Ar</span>
                             </div>
                             <small class="form-text">Le prix unitaire en Ariary (ex: 2500 pour 1 kg de riz)</small>
@@ -180,19 +182,19 @@ include __DIR__ . '/../inc/header.php';
             const quantiteHelp = document.getElementById('quantiteHelp');
             const quantiteInput = document.getElementById('quantite');
 
-            if(typeSelect) {
+            if (typeSelect) {
                 typeSelect.addEventListener('change', function() {
                     const type = this.value;
-                    
-                    if(type === 'argent') {
+
+                    if (type === 'argent') {
                         quantiteLabel.innerHTML = '<i class="fas fa-calculator"></i> Montant <span class="text-danger">*</span>';
                         quantiteHelp.textContent = 'Entrez le montant total nécessaire en Ariary';
                         quantiteInput.placeholder = 'Ex: 5000000';
-                    } else if(type === 'nature') {
+                    } else if (type === 'nature') {
                         quantiteLabel.innerHTML = '<i class="fas fa-calculator"></i> Quantité <span class="text-danger">*</span>';
                         quantiteHelp.textContent = 'Entrez la quantité nécessaire (en kg, litres, etc.)';
                         quantiteInput.placeholder = 'Ex: 1000';
-                    } else if(type === 'materiaux') {
+                    } else if (type === 'materiaux') {
                         quantiteLabel.innerHTML = '<i class="fas fa-calculator"></i> Quantité <span class="text-danger">*</span>';
                         quantiteHelp.textContent = 'Entrez le nombre d\'unités nécessaires';
                         quantiteInput.placeholder = 'Ex: 500';
@@ -202,4 +204,5 @@ include __DIR__ . '/../inc/header.php';
         });
     </script>
 </body>
+
 </html>

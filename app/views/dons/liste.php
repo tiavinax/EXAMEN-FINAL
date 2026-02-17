@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +34,8 @@
             padding: 2rem 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
-            margin-top: 180px; /* Espace pour le header fixe */
+            margin-top: 180px;
+            /* Espace pour le header fixe */
         }
 
         /* Page Header */
@@ -47,7 +49,7 @@
             background: white;
             padding: 1.5rem 2rem;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--secondary);
         }
 
@@ -87,12 +89,12 @@
             align-items: center;
             gap: 0.5rem;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,51,102,0.2);
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,51,102,0.3);
+            box-shadow: 0 6px 16px rgba(0, 51, 102, 0.3);
             color: white;
         }
 
@@ -100,11 +102,11 @@
         .alert-custom {
             border-radius: 8px;
             border-left: 4px solid var(--success);
-            background: rgba(46,125,50,0.05);
+            background: rgba(46, 125, 50, 0.05);
             color: var(--success);
             padding: 1rem;
             margin-bottom: 2rem;
-            border: 1px solid rgba(46,125,50,0.1);
+            border: 1px solid rgba(46, 125, 50, 0.1);
             display: flex;
             align-items: center;
         }
@@ -121,7 +123,7 @@
             background: white;
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
             transition: all 0.3s;
             display: flex;
@@ -131,7 +133,7 @@
 
         .stat-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             border-color: var(--primary);
         }
 
@@ -145,10 +147,25 @@
             font-size: 1.8rem;
         }
 
-        .bg-primary-soft { background: rgba(0,51,102,0.1); color: var(--primary); }
-        .bg-success-soft { background: rgba(46,125,50,0.1); color: var(--success); }
-        .bg-warning-soft { background: rgba(237,108,2,0.1); color: var(--warning); }
-        .bg-info-soft { background: rgba(2,136,209,0.1); color: var(--info); }
+        .bg-primary-soft {
+            background: rgba(0, 51, 102, 0.1);
+            color: var(--primary);
+        }
+
+        .bg-success-soft {
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--success);
+        }
+
+        .bg-warning-soft {
+            background: rgba(237, 108, 2, 0.1);
+            color: var(--warning);
+        }
+
+        .bg-info-soft {
+            background: rgba(2, 136, 209, 0.1);
+            color: var(--info);
+        }
 
         .stat-content {
             flex: 1;
@@ -171,7 +188,7 @@
         .table-container {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
             overflow: hidden;
         }
@@ -230,7 +247,7 @@
         .search-box input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
         }
 
         /* Table */
@@ -279,7 +296,7 @@
         }
 
         .badge-nature {
-            background: rgba(46,125,50,0.1);
+            background: rgba(46, 125, 50, 0.1);
             color: var(--success);
             padding: 0.3rem 1rem;
             border-radius: 30px;
@@ -291,7 +308,7 @@
         }
 
         .badge-materiaux {
-            background: rgba(108,117,125,0.1);
+            background: rgba(108, 117, 125, 0.1);
             color: var(--gray);
             padding: 0.3rem 1rem;
             border-radius: 30px;
@@ -303,7 +320,7 @@
         }
 
         .badge-argent {
-            background: rgba(237,108,2,0.1);
+            background: rgba(237, 108, 2, 0.1);
             color: var(--warning);
             padding: 0.3rem 1rem;
             border-radius: 30px;
@@ -315,7 +332,7 @@
         }
 
         .badge-recent {
-            background: rgba(0,51,102,0.1);
+            background: rgba(0, 51, 102, 0.1);
             color: var(--primary);
             padding: 0.3rem 0.8rem;
             border-radius: 30px;
@@ -338,9 +355,17 @@
             font-weight: 600;
         }
 
-        .montant.nature { color: var(--success); }
-        .montant.materiaux { color: var(--gray); }
-        .montant.argent { color: var(--warning); }
+        .montant.nature {
+            color: var(--success);
+        }
+
+        .montant.materiaux {
+            color: var(--gray);
+        }
+
+        .montant.argent {
+            color: var(--warning);
+        }
 
         .montant small {
             font-size: 0.75rem;
@@ -461,6 +486,7 @@
         }
     </style>
 </head>
+
 <body>
     <?php include __DIR__ . '/../inc/header.php'; ?>
 
@@ -491,16 +517,17 @@
         </div>
 
         <!-- Message de succès -->
-        <?php if(isset($_SESSION['success'])): ?>
+        <?php if (isset($_SESSION['success'])): ?>
             <div class="alert-custom">
                 <i class="fas fa-check-circle me-2"></i>
-                <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+                <?= $_SESSION['success'];
+                unset($_SESSION['success']); ?>
             </div>
         <?php endif; ?>
 
         <!-- Statistiques -->
         <div class="stats-grid">
-            <?php 
+            <?php
             $totalNature = count(array_filter($dons, fn($d) => $d->type === 'nature'));
             $totalMateriaux = count(array_filter($dons, fn($d) => $d->type === 'materiaux'));
             $totalArgent = count(array_filter($dons, fn($d) => $d->type === 'argent'));
@@ -570,116 +597,117 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        <?php if(empty($dons)): ?>
+                        <?php if (empty($dons)): ?>
                             <tr>
                                 <td colspan="7" class="empty-state">
                                     <i class="fas fa-inbox"></i>
                                     <h5>Aucun don enregistré</h5>
                                     <p class="text-muted">Commencez par ajouter votre premier don</p>
-                                    <a href="/dons/ajouter" class="btn-primary">
-                                        <i class="fas fa-plus"></i> Ajouter un don
+                                    <a href="/ETU003955/EXAMEN-FINAL/public/dons/ajouter" class="btn-primary">
+                                        <i class="fas fa-plus"></i>
+                                        Nouveau don
                                     </a>
                                 </td>
                             </tr>
                         <?php else: ?>
-                            <?php foreach($dons as $don): ?>
-                            <tr class="don-row" data-type="<?= $don->type ?>">
-                                <td>
-                                    <span class="badge-id">#<?= str_pad($don->id, 4, '0', STR_PAD_LEFT) ?></span>
-                                </td>
-                                <td>
-                                    <div class="donateur-info">
-                                        <i class="fas fa-user-circle"></i>
-                                        <?= htmlspecialchars($don->donateur ?? 'Anonyme') ?>
-                                    </div>
-                                </td>
-                                <td>
-                                    <?php
-                                    $badgeClass = match($don->type) {
-                                        'nature' => 'badge-nature',
-                                        'materiaux' => 'badge-materiaux',
-                                        'argent' => 'badge-argent'
-                                    };
-                                    $typeIcon = match($don->type) {
-                                        'nature' => 'fas fa-seedling',
-                                        'materiaux' => 'fas fa-tools',
-                                        'argent' => 'fas fa-coins'
-                                    };
-                                    ?>
-                                    <span class="<?= $badgeClass ?>">
-                                        <i class="<?= $typeIcon ?>"></i>
-                                        <?= ucfirst($don->type) ?>
-                                    </span>
-                                </td>
-                                <td class="fw-semibold"><?= htmlspecialchars($don->libelle) ?></td>
-                                <td>
-                                    <span class="montant <?= $don->type ?>">
-                                        <?php if($don->type === 'argent'): ?>
-                                            <?= number_format($don->montant, 0, ',', ' ') ?> <small>Ar</small>
-                                        <?php elseif($don->type === 'nature'): ?>
-                                            <?= number_format($don->quantite) ?> <small>kg</small>
-                                        <?php else: ?>
-                                            <?= number_format($don->quantite) ?> <small>unités</small>
-                                        <?php endif; ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="date-info">
-                                        <i class="fas fa-calendar-alt me-1 text-muted"></i>
-                                        <?= date('d/m/Y', strtotime($don->date_don)) ?>
-                                        <small class="d-block">
-                                            <?= date('H:i', strtotime($don->date_don)) ?>
-                                        </small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <a href="/dons/modifier/<?= $don->id ?>" class="btn-icon" title="Modifier">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="/dons/supprimer/<?= $don->id ?>" 
-                                           class="btn-icon text-danger" 
-                                           title="Supprimer"
-                                           onclick="return confirm('Supprimer ce don ?')">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php foreach ($dons as $don): ?>
+                                <tr class="don-row" data-type="<?= $don->type ?>">
+                                    <td>
+                                        <span class="badge-id">#<?= str_pad($don->id, 4, '0', STR_PAD_LEFT) ?></span>
+                                    </td>
+                                    <td>
+                                        <div class="donateur-info">
+                                            <i class="fas fa-user-circle"></i>
+                                            <?= htmlspecialchars($don->donateur ?? 'Anonyme') ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $badgeClass = match ($don->type) {
+                                            'nature' => 'badge-nature',
+                                            'materiaux' => 'badge-materiaux',
+                                            'argent' => 'badge-argent'
+                                        };
+                                        $typeIcon = match ($don->type) {
+                                            'nature' => 'fas fa-seedling',
+                                            'materiaux' => 'fas fa-tools',
+                                            'argent' => 'fas fa-coins'
+                                        };
+                                        ?>
+                                        <span class="<?= $badgeClass ?>">
+                                            <i class="<?= $typeIcon ?>"></i>
+                                            <?= ucfirst($don->type) ?>
+                                        </span>
+                                    </td>
+                                    <td class="fw-semibold"><?= htmlspecialchars($don->libelle) ?></td>
+                                    <td>
+                                        <span class="montant <?= $don->type ?>">
+                                            <?php if ($don->type === 'argent'): ?>
+                                                <?= number_format($don->montant, 0, ',', ' ') ?> <small>Ar</small>
+                                            <?php elseif ($don->type === 'nature'): ?>
+                                                <?= number_format($don->quantite) ?> <small>kg</small>
+                                            <?php else: ?>
+                                                <?= number_format($don->quantite) ?> <small>unités</small>
+                                            <?php endif; ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="date-info">
+                                            <i class="fas fa-calendar-alt me-1 text-muted"></i>
+                                            <?= date('d/m/Y', strtotime($don->date_don)) ?>
+                                            <small class="d-block">
+                                                <?= date('H:i', strtotime($don->date_don)) ?>
+                                            </small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="<?= base_url('dons/modifier/' . $don->id) ?>" class="btn-icon" title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="<?= base_url('dons/supprimer/' . $don->id) ?>"
+                                                class="btn-icon text-danger"
+                                                title="Supprimer"
+                                                onclick="return confirm('Supprimer ce don ?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </div>
 
-            <?php if(!empty($dons)): ?>
-            <div class="table-footer">
-                <div class="text-muted">
-                    <i class="fas fa-database me-1"></i> <?= count($dons) ?> don(s)
+            <?php if (!empty($dons)): ?>
+                <div class="table-footer">
+                    <div class="text-muted">
+                        <i class="fas fa-database me-1"></i> <?= count($dons) ?> don(s)
+                    </div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">«</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">»</a></li>
+                        </ul>
+                    </nav>
                 </div>
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul>
-                </nav>
-            </div>
             <?php endif; ?>
         </div>
     </div>
 
     <?php include __DIR__ . '/../inc/footer.php'; ?>
-    
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="<?= base_url('/assets/js/bootstrap.bundle.min.js') ?>"></script>
     <script>
         // Recherche
         document.getElementById('searchInput')?.addEventListener('keyup', function(e) {
             const search = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('.don-row');
-            
+
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 row.style.display = text.includes(search) ? '' : 'none';
@@ -687,4 +715,5 @@
         });
     </script>
 </body>
+
 </html>

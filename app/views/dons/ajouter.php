@@ -604,7 +604,7 @@
     <?php include __DIR__ . '/../inc/footer.php'; ?>
 
     <!-- Scripts -->
-    <script src="/assets/js/bootstrap.bundle.min.js" nonce="<?= $nonce ?>"></script>
+    <script src="<?= base_url('/assets/js/bootstrap.bundle.min.js') ?>" nonce="<?= $nonce ?>"></script>
     <script nonce="<?= $nonce ?>">
         document.addEventListener('DOMContentLoaded', function() {
             const typeSelect = document.getElementById('type');

@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 // Inclure l'utilitaire de base de données
 require_once __DIR__ . '/../utils/Database.php';
 
+
 $ds = DIRECTORY_SEPARATOR;
 require(__DIR__ . $ds . '..' . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php');
 
@@ -15,6 +16,17 @@ if(file_exists(__DIR__. $ds . 'config.php') === false) {
 $app = Flight::app();
 
 $config = require('config.php');
+
+// S'assurer que flight.base_url est défini
+if (!Flight::get('flight.base_url')) {
+    $isLocal = in_array($_SERVER['SERVER_NAME'], ['localhost', '127.0.0.1']);
+    if ($isLocal) {
+        $baseUrl = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
+    } else {
+        $baseUrl = '/ETU003955/EXAMEN-FINAL/public';
+    }
+    Flight::set('flight.base_url', $baseUrl);
+}
 
 /* ===== SOLUTION : CONFIGURER LE CHEMIN DES VUES ===== */
 

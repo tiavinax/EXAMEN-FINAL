@@ -1,0 +1,136 @@
+Objectif final global :
+
+Développer une application web de gestion des besoins et des dons pour les sinistrés, avec un tableau de bord affichant les besoins par ville et les dons attribués, en respectant l'ordre de priorité des dons par date de saisie.
+
+1. Gestion des villes
+
+Objectif : Permettre d'ajouter et de lister les villes où se trouvent les sinistrés.
+
+Sous-tâches :
+
+Back-end :
+
+Créer une table villes (id, nom)
+
+Créer un endpoint pour ajouter une ville
+
+Créer un endpoint pour lister toutes les villes
+
+Front-end :
+
+Formulaire d'ajout de ville
+
+Liste des villes existantes
+
+
+
+
+
+
+
+
+
+
+2. Gestion des besoins par ville
+
+Objectif : Permettre de saisir les besoins (nature, matériaux, argent) pour chaque ville, avec prix unitaire et quantité.
+
+Sous-tâches :
+Back-end :
+
+Créer une table besoins (id, ville_id, type, libelle, prix_unitaire, quantite)
+
+Endpoint pour ajouter un besoin
+
+Endpoint pour lister les besoins par ville
+
+Front-end :
+
+Formulaire de saisie d’un besoin (avec sélection de la ville)
+
+Affichage des besoins par ville
+
+3. Gestion des dons
+
+Objectif : Permettre de saisir les dons reçus (nature, matériaux, argent) avec une date de saisie.
+
+Sous-tâches :
+Back-end :
+
+Créer une table dons (id, type, libelle, montant_ou_quantite, date_saisie)
+
+Endpoint pour ajouter un don
+
+Endpoint pour lister tous les dons (triés par date)
+
+Front-end :
+
+Formulaire de saisie d’un don
+
+Liste des dons enregistrés
+
+4. Dispatch automatique des dons
+
+Objectif : Simuler l’attribution des dons aux villes selon l’ordre de saisie et les besoins restants.
+
+Sous-tâches :
+Back-end :
+
+Logique de dispatch : pour chaque don, parcourir les villes avec besoins non satisfaits
+
+Créer une table attributions (id, don_id, ville_id, quantite_attribuee, date_attribution)
+
+Endpoint pour déclencher le dispatch
+
+Endpoint pour consulter les attributions
+
+Front-end :
+
+Bouton "Lancer le dispatch"
+
+Affichage des attributions par ville
+
+5. Tableau de bord
+Objectif : Afficher pour chaque ville les besoins restants et les dons déjà attribués.
+
+Sous-tâches :
+Back-end :
+
+Endpoint pour récupérer les données synthétiques : villes, besoins, totaux attribués, restes
+
+Front-end :
+
+Page tableau de bord avec :
+
+Liste des villes
+
+Pour chaque ville : besoins initiaux, total attribué, reste
+
+Possibilité de voir le détail des attributions
+
+6. Règles de gestion et contraintes
+Objectif : Assurer que le prix unitaire ne change pas et que les dons sont dispatchés par ordre de date.
+
+Sous-tâches :
+Back-end :
+
+Vérifier que le prix unitaire d’un besoin n’est pas modifiable après création (ou bloquer modification)
+
+Trier les dons par date avant dispatch
+
+Front-end :
+
+Bloquer la modification du prix unitaire dans l’UI si besoin
+
+7. Déploiement
+Objectif : Rendre l’application accessible sur le serveur ITU.
+
+Sous-tâches :
+Exporter la base de données
+
+Configurer le serveur (PHP, MySQL)
+
+Transférer les fichiers
+
+Tester en ligne
+

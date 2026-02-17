@@ -4,14 +4,12 @@ namespace app\models;
 
 use app\utils\Database;
 use app\models\AttributionModel;
-use Flight;
 use PDO;
-
 
 class DispatchModel
 {
-     private $db;
-     private $attributionModel;
+    private $db;
+    private $attributionModel;
 
     public function __construct()
     {
@@ -20,96 +18,115 @@ class DispatchModel
     }
 
     /**
-     * Lancer le dispatch automatique des dons
+     * Lancer le dispatch automatique des dons selon le mode choisi
      */
-    public function run()
+    public function run($mode = 'fifo')
     {
-        // 1. Récupérer tous les dons non attribués (ou on va tout réattribuer)
-        $dons = $this->getDonsNonAttribues();
-        
-        // 2. Récupérer tous les besoins avec leurs restes
-        $besoins = $this->getBesoinsAvecRestes();
-        
-        $attributions = [];
-        
-        // 3. Pour chaque don (trié par date)
-        foreach ($dons as $don) {
-            // Filtrer les besoins compatibles (même type et même libellé)
-            $besoinsCompatibles = array_filter($besoins, function($besoin) use ($don) {
-                return $besoin->type === $don->type && 
-                       $besoin->libelle === $don->libelle && 
-                       $besoin->reste > 0;
-            });
+        try {
+            $dons = $this->getDonsNonAttribues(); // Appel à la méthode corrigée
+            $besoins = $this->getBesoinsAvecRestes();
             
-            // Trier par date de création (plus ancien d'abord)
-            usort($besoinsCompatibles, function($a, $b) {
-                return strtotime($a->created_at) - strtotime($b->created_at);
-            });
-            
-            $resteDon = $don->type === 'argent' ? $don->montant : $don->quantite;
-            
-            // 4. Distribuer le don aux besoins
-            foreach ($besoinsCompatibles as $besoin) {
-                if ($resteDon <= 0) break;
-                
-                $besoinRestant = $besoin->reste;
-                $quantiteAAttribuer = min($resteDon, $besoinRestant);
-                
-                if ($quantiteAAttribuer > 0) {
-                    // Créer l'attribution
-                    $attributionData = [
-                        'don_id' => $don->id,
-                        'besoin_id' => $besoin->id,
-                        'ville_id' => $besoin->ville_id
-                    ];
-                    
-                    if ($don->type === 'argent') {
-                        $attributionData['montant_attribue'] = $quantiteAAttribuer;
-                        $attributionData['quantite_attribuee'] = null;
-                    } else {
-                        $attributionData['quantite_attribuee'] = $quantiteAAttribuer;
-                        $attributionData['montant_attribue'] = null;
-                    }
-                    
-                    $this->attributionModel->create($attributionData);
-                    
-                    // Mettre à jour les variables pour la suite
-                    $resteDon -= $quantiteAAttribuer;
-                    $besoin->reste -= $quantiteAAttribuer;
-                    
-                    $attributions[] = $attributionData;
-                }
+            if (empty($dons)) {
+                return ['success' => true, 'message' => 'Aucun don disponible'];
             }
+            
+            if (empty($besoins)) {
+                return ['success' => true, 'message' => 'Aucun besoin en attente'];
+            }
+            
+            $totalAttributions = 0;
+            
+            foreach ($dons as $don) {
+                $resteDon = ($don->type === 'argent') ? $don->montant : $don->quantite;
+                
+                $besoinsCompatibles = array_filter($besoins, function($b) use ($don) {
+                    return $b->type === $don->type && 
+                           $b->libelle === $don->libelle && 
+                           $b->reste > 0;
+                });
+                
+                if (empty($besoinsCompatibles)) continue;
+                
+                $besoinsTries = $this->trierBesoins($besoinsCompatibles, $mode);
+                
+                switch ($mode) {
+                    case 'smallest':
+                        $attributions = $this->distribuerPlusPetite($don, $besoinsTries, $resteDon);
+                        break;
+                        
+                    case 'proportional':
+                        $attributions = $this->distribuerProportionnel($don, $besoinsTries, $resteDon);
+                        break;
+                        
+                    default:
+                        $attributions = $this->distribuerFIFO($don, $besoinsTries, $resteDon);
+                        break;
+                }
+                
+                $totalAttributions += count($attributions);
+            }
+            
+            return [
+                'success' => true,
+                'message' => "$totalAttributions nouvelle(s) attribution(s) créée(s) en mode $mode"
+            ];
+            
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage()
+            ];
         }
-        
-        return [
-            'success' => true,
-            'message' => count($attributions) . ' attribution(s) créée(s)',
-            'count' => count($attributions)
-        ];
     }
 
     /**
-     * Récupérer les dons non attribués (ou tous pour simplifier)
+     * Récupérer les dons disponibles (en tenant compte des quantités déjà attribuées)
+     * 
+     * CETTE MÉTHODE DOIT ÊTRE AJOUTÉE ICI
      */
-    private function getDonsNonAttribues()
+    public function getDonsNonAttribues()
     {
-        $sql = "SELECT d.* 
+        $sql = "SELECT d.*,
+                       d.quantite - COALESCE((
+                           SELECT SUM(quantite_attribuee) 
+                           FROM attributions 
+                           WHERE don_id = d.id
+                       ), 0) as quantite_restante,
+                       d.montant - COALESCE((
+                           SELECT SUM(montant_attribue) 
+                           FROM attributions 
+                           WHERE don_id = d.id
+                       ), 0) as montant_restant
                 FROM dons d
-                LEFT JOIN attributions a ON d.id = a.don_id
-                WHERE a.id IS NULL
+                HAVING 
+                    (d.type = 'argent' AND montant_restant > 0) OR
+                    (d.type != 'argent' AND quantite_restante > 0)
                 ORDER BY d.date_don ASC";
         
         $stmt = $this->db->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        $dons = $stmt->fetchAll(PDO::FETCH_OBJ);
+        
+        // Transformer pour garder la même structure
+        foreach ($dons as $don) {
+            if ($don->type === 'argent') {
+                $don->montant = $don->montant_restant;
+            } else {
+                $don->quantite = $don->quantite_restante;
+            }
+            // Nettoyer les propriétés temporaires
+            unset($don->quantite_restante);
+            unset($don->montant_restant);
+        }
+        
+        return $dons;
     }
 
     /**
      * Récupérer les besoins avec leurs restes
      */
-    private function getBesoinsAvecRestes()
+    public function getBesoinsAvecRestes()
     {
-        $sql = "SELECT b.*, v.nom AS ville_nom,
+        $sql = "SELECT b.*, v.nom AS ville_nom, v.region,
                        COALESCE(SUM(
                            CASE 
                                WHEN b.type = 'argent' THEN a.montant_attribue
@@ -121,7 +138,7 @@ class DispatchModel
                            ELSE b.quantite - COALESCE(SUM(a.quantite_attribuee), 0)
                        END AS reste
                 FROM besoins b
-                INNER JOIN villes v ON b.ville_id = v.id
+                JOIN villes v ON b.ville_id = v.id
                 LEFT JOIN attributions a ON b.id = a.besoin_id
                 GROUP BY b.id
                 HAVING reste > 0
@@ -132,14 +149,164 @@ class DispatchModel
     }
 
     /**
-     * Réinitialiser et tout redistribuer
+     * Trier les besoins selon le mode
      */
-    public function redistribute()
+    public function trierBesoins($besoins, $mode)
     {
-        // Supprimer toutes les attributions
-        $this->attributionModel->resetAll();
+        $besoinsArray = array_values($besoins);
         
-        // Relancer le dispatch
-        return $this->run();
+        switch ($mode) {
+            case 'smallest':
+                usort($besoinsArray, fn($a, $b) => $a->reste - $b->reste);
+                break;
+            case 'proportional':
+                // Pas de tri spécifique
+                break;
+            default: // fifo
+                usort($besoinsArray, fn($a, $b) => strtotime($a->created_at) - strtotime($b->created_at));
+        }
+        
+        return $besoinsArray;
+    }
+
+    /**
+     * Distribution FIFO
+     */
+    public function distribuerFIFO($don, $besoins, $resteDon)
+    {
+        $attributions = [];
+        
+        foreach ($besoins as $besoin) {
+            if ($resteDon <= 0) break;
+            
+            $besoinRestant = $besoin->reste;
+            $quantiteAAttribuer = min($resteDon, $besoinRestant);
+            
+            if ($quantiteAAttribuer > 0) {
+                $attribution = $this->creerAttribution($don, $besoin, $quantiteAAttribuer);
+                $attributions[] = $attribution;
+                
+                $resteDon -= $quantiteAAttribuer;
+                $besoin->reste -= $quantiteAAttribuer;
+            }
+        }
+        
+        return $attributions;
+    }
+
+    /**
+     * Distribution plus petite demande
+     */
+    public function distribuerPlusPetite($don, $besoins, $resteDon)
+    {
+        $attributions = [];
+        
+        // Trier par reste croissant
+        usort($besoins, function($a, $b) {
+            return $a->reste - $b->reste;
+        });
+        
+        foreach ($besoins as $besoin) {
+            if ($resteDon <= 0) break;
+            
+            $besoinRestant = $besoin->reste;
+            $quantiteAAttribuer = min($resteDon, $besoinRestant);
+            
+            if ($quantiteAAttribuer > 0) {
+                $attribution = $this->creerAttribution($don, $besoin, $quantiteAAttribuer);
+                $attributions[] = $attribution;
+                
+                $resteDon -= $quantiteAAttribuer;
+                $besoin->reste -= $quantiteAAttribuer;
+            }
+        }
+        
+        return $attributions;
+    }
+
+    /**
+     * Distribution proportionnelle
+     */
+    public function distribuerProportionnel($don, $besoins, $resteDon)
+    {
+        $attributions = [];
+        
+        $totalBesoins = array_reduce($besoins, function($carry, $besoin) {
+            return $carry + $besoin->reste;
+        }, 0);
+        
+        if ($totalBesoins <= 0) return $attributions;
+        
+        $parts = [];
+        $totalAttribue = 0;
+        
+        foreach ($besoins as $besoin) {
+            $partTheorique = ($besoin->reste / $totalBesoins) * $resteDon;
+            $partEntiere = floor($partTheorique);
+            $decimal = $partTheorique - $partEntiere;
+            
+            $parts[] = [
+                'besoin' => $besoin,
+                'part_entiere' => $partEntiere,
+                'decimal' => $decimal
+            ];
+            
+            $totalAttribue += $partEntiere;
+        }
+        
+        $resteADistribuer = $resteDon - $totalAttribue;
+        
+        usort($parts, function($a, $b) {
+            return $b['decimal'] <=> $a['decimal'];
+        });
+        
+        for ($i = 0; $i < min($resteADistribuer, count($parts)); $i++) {
+            if ($parts[$i]['decimal'] > 0) {
+                $parts[$i]['part_entiere']++;
+            }
+        }
+        
+        foreach ($parts as $part) {
+            if ($part['part_entiere'] > 0) {
+                $attribution = $this->creerAttribution($don, $part['besoin'], $part['part_entiere']);
+                $attributions[] = $attribution;
+                $part['besoin']->reste -= $part['part_entiere'];
+            }
+        }
+        
+        return $attributions;
+    }
+
+    /**
+     * Créer une attribution
+     */
+    public function creerAttribution($don, $besoin, $quantite)
+    {
+        $attributionData = [
+            'don_id' => $don->id,
+            'besoin_id' => $besoin->id,
+            'ville_id' => $besoin->ville_id
+        ];
+        
+        if ($don->type === 'argent') {
+            $attributionData['montant_attribue'] = round($quantite, 2);
+            $attributionData['quantite_attribuee'] = null;
+        } else {
+            $attributionData['quantite_attribuee'] = round($quantite, 2);
+            $attributionData['montant_attribue'] = null;
+        }
+        
+        $this->attributionModel->create($attributionData);
+        
+        return $attributionData;
+    }
+
+    /**
+     * Réinitialiser toutes les attributions
+     */
+    public function resetAll()
+    {
+        $sql = "DELETE FROM attributions";
+        return $this->db->exec($sql);
     }
 }

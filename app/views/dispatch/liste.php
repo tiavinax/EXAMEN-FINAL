@@ -1,4 +1,4 @@
-<?php
+<?php 
 // villes/liste.php
 $title = "Liste des villes - BNGRC";
 $page_css = ['liste_villes'];
@@ -7,7 +7,6 @@ include __DIR__ . '/../inc/header.php';
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +15,7 @@ include __DIR__ . '/../inc/header.php';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
         /* ===== VARIABLES ===== */
         :root {
@@ -244,20 +243,9 @@ include __DIR__ . '/../inc/header.php';
             font-size: 1.8rem;
         }
 
-        .bg-primary-soft {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-
-        .bg-success-soft {
-            background: var(--success-light);
-            color: var(--success);
-        }
-
-        .bg-info-soft {
-            background: var(--info-light);
-            color: var(--info);
-        }
+        .bg-primary-soft { background: var(--primary-light); color: var(--primary); }
+        .bg-success-soft { background: var(--success-light); color: var(--success); }
+        .bg-info-soft { background: var(--info-light); color: var(--info); }
 
         .stat-content {
             flex: 1;
@@ -653,15 +641,13 @@ include __DIR__ . '/../inc/header.php';
                 font-size: 1.5rem;
             }
 
-            th,
-            td {
+            th, td {
                 padding: 0.75rem 1rem;
                 white-space: nowrap;
             }
         }
     </style>
 </head>
-
 <body>
 
     <div class="main-container">
@@ -684,7 +670,7 @@ include __DIR__ . '/../inc/header.php';
                             <li class="breadcrumb-item active">Villes</li>
                         </ol>
                     </nav>
-                    <a href="/ETU003955/EXAMEN-FINAL/public/villes/ajouter" class="btn-primary">
+                    <a href="/villes/ajouter" class="btn-primary">
                         <i class="fas fa-plus"></i>
                         Nouvelle ville
                     </a>
@@ -692,78 +678,76 @@ include __DIR__ . '/../inc/header.php';
             </div>
 
             <!-- Messages -->
-            <?php if (isset($_SESSION['success'])): ?>
+            <?php if(isset($_SESSION['success'])): ?>
                 <div class="alert-custom success">
                     <i class="fas fa-check-circle"></i>
-                    <?= $_SESSION['success'];
-                    unset($_SESSION['success']); ?>
+                    <?= $_SESSION['success']; unset($_SESSION['success']); ?>
                 </div>
             <?php endif; ?>
 
-            <?php if (isset($_SESSION['error'])): ?>
+            <?php if(isset($_SESSION['error'])): ?>
                 <div class="alert-custom error">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <?= $_SESSION['error'];
-                    unset($_SESSION['error']); ?>
+                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
                 </div>
             <?php endif; ?>
 
             <!-- Statistiques -->
-            <?php if (!empty($villes)):
+            <?php if(!empty($villes)): 
                 $totalVilles = count($villes);
                 $totalRegions = count(array_unique(array_column($villes, 'region')));
                 $dateRecent = max(array_column($villes, 'created_at'));
             ?>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-primary-soft">
-                            <i class="fas fa-city"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value"><?= $totalVilles ?></div>
-                            <div class="stat-label">Total villes</div>
-                        </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon bg-primary-soft">
+                        <i class="fas fa-city"></i>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon bg-success-soft">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value"><?= $totalRegions ?></div>
-                            <div class="stat-label">Régions</div>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon bg-info-soft">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value"><?= date('d/m/Y', strtotime($dateRecent)) ?></div>
-                            <div class="stat-label">Dernière mise à jour</div>
-                        </div>
+                    <div class="stat-content">
+                        <div class="stat-value"><?= $totalVilles ?></div>
+                        <div class="stat-label">Total villes</div>
                     </div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-success-soft">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value"><?= $totalRegions ?></div>
+                        <div class="stat-label">Régions</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon bg-info-soft">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value"><?= date('d/m/Y', strtotime($dateRecent)) ?></div>
+                        <div class="stat-label">Dernière mise à jour</div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Filtres -->
-                <div class="filters-section">
-                    <div class="d-flex gap-3 align-items-center">
-                        <span class="text-muted"><i class="fas fa-filter me-1"></i>Filtrer :</span>
-                        <select class="form-select" style="width: auto;" id="regionFilter">
-                            <option value="">Toutes les régions</option>
-                            <?php
-                            $regions = array_unique(array_column($villes, 'region'));
-                            sort($regions);
-                            foreach ($regions as $region):
-                            ?>
-                                <option value="<?= htmlspecialchars($region) ?>"><?= htmlspecialchars($region) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Rechercher une ville..." id="searchInput">
-                    </div>
+            <!-- Filtres -->
+            <div class="filters-section">
+                <div class="d-flex gap-3 align-items-center">
+                    <span class="text-muted"><i class="fas fa-filter me-1"></i>Filtrer :</span>
+                    <select class="form-select" style="width: auto;" id="regionFilter">
+                        <option value="">Toutes les régions</option>
+                        <?php 
+                        $regions = array_unique(array_column($villes, 'region'));
+                        sort($regions);
+                        foreach($regions as $region): 
+                        ?>
+                            <option value="<?= htmlspecialchars($region) ?>"><?= htmlspecialchars($region) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Rechercher une ville..." id="searchInput">
+                </div>
+            </div>
             <?php endif; ?>
 
             <!-- Tableau -->
@@ -787,93 +771,92 @@ include __DIR__ . '/../inc/header.php';
                             </tr>
                         </thead>
                         <tbody id="tableBody">
-                            <?php if (empty($villes)): ?>
+                            <?php if(empty($villes)): ?>
                                 <tr>
                                     <td colspan="5" class="empty-state">
                                         <i class="fas fa-city"></i>
                                         <h5>Aucune ville enregistrée</h5>
                                         <p>Commencez par ajouter votre première ville</p>
-                                        <a href="/ETU003955/EXAMEN-FINAL/public/villes/ajouter" class="btn-primary">
+                                        <a href="/villes/ajouter" class="btn-primary">
                                             <i class="fas fa-plus"></i> Ajouter une ville
                                         </a>
                                     </td>
                                 </tr>
                             <?php else: ?>
-                                <?php foreach ($villes as $ville): ?>
-                                    <tr class="ville-row" data-region="<?= htmlspecialchars($ville->region) ?>">
-                                        <td>
-                                            <span class="badge-id">#<?= str_pad($ville->id, 3, '0', STR_PAD_LEFT) ?></span>
-                                        </td>
-                                        <td>
-                                            <span class="badge-ville">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                <?= htmlspecialchars($ville->nom) ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="badge-region">
-                                                <i class="fas fa-map-signs"></i>
-                                                <?= htmlspecialchars($ville->region) ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="date-info">
-                                                <i class="fas fa-calendar-alt"></i>
-                                                <?= date('d/m/Y', strtotime($ville->created_at)) ?>
-                                                <small><?= date('H:i', strtotime($ville->created_at)) ?></small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="/ETU003955/EXAMEN-FINAL/public/villes/modifier/<?= $ville->id ?>" class="btn-icon warning" title="Modifier">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <a href="/ETU003955/EXAMEN-FINAL/public/villes/supprimer/<?= $ville->id ?>"
-                                                    class="btn-icon danger"
-                                                    title="Supprimer"
-                                                    onclick="return confirm('Supprimer cette ville ? Tous les besoins associés seront également supprimés.')">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <?php foreach($villes as $ville): ?>
+                                <tr class="ville-row" data-region="<?= htmlspecialchars($ville->region) ?>">
+                                    <td>
+                                        <span class="badge-id">#<?= str_pad($ville->id, 3, '0', STR_PAD_LEFT) ?></span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-ville">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <?= htmlspecialchars($ville->nom) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-region">
+                                            <i class="fas fa-map-signs"></i>
+                                            <?= htmlspecialchars($ville->region) ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="date-info">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <?= date('d/m/Y', strtotime($ville->created_at)) ?>
+                                            <small><?= date('H:i', strtotime($ville->created_at)) ?></small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <a href="/villes/modifier/<?= $ville->id ?>" class="btn-icon warning" title="Modifier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="/villes/supprimer/<?= $ville->id ?>" 
+                                               class="btn-icon danger" 
+                                               title="Supprimer"
+                                               onclick="return confirm('Supprimer cette ville ? Tous les besoins associés seront également supprimés.')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
 
-                <?php if (!empty($villes)): ?>
-                    <div class="table-footer">
-                        <div class="text-muted">
-                            <i class="fas fa-database"></i> <?= count($villes) ?> ville(s) · <?= $totalRegions ?> région(s)
-                        </div>
-                        <nav>
-                            <ul class="pagination">
-                                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">»</a></li>
-                            </ul>
-                        </nav>
+                <?php if(!empty($villes)): ?>
+                <div class="table-footer">
+                    <div class="text-muted">
+                        <i class="fas fa-database"></i> <?= count($villes) ?> ville(s) · <?= $totalRegions ?> région(s)
                     </div>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">«</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">»</a></li>
+                        </ul>
+                    </nav>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 
     <?php include __DIR__ . '/../inc/footer.php'; ?>
-
-    <script src="<?= asset_url('js/bootstrap.bundle.min.js') ?>"></script>
-
+    
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
     <script>
         const searchInput = document.getElementById('searchInput');
-        if (searchInput) {
+        if(searchInput) {
             searchInput.addEventListener('keyup', function() {
                 const search = this.value.toLowerCase();
                 const rows = document.querySelectorAll('.ville-row');
-
+                
                 rows.forEach(row => {
                     const text = row.textContent.toLowerCase();
                     row.style.display = text.includes(search) ? '' : 'none';
@@ -882,11 +865,11 @@ include __DIR__ . '/../inc/header.php';
         }
 
         const regionFilter = document.getElementById('regionFilter');
-        if (regionFilter) {
+        if(regionFilter) {
             regionFilter.addEventListener('change', function() {
                 const region = this.value;
                 const rows = document.querySelectorAll('.ville-row');
-
+                
                 rows.forEach(row => {
                     const match = !region || row.dataset.region === region;
                     row.style.display = match ? '' : 'none';
@@ -895,5 +878,4 @@ include __DIR__ . '/../inc/header.php';
         }
     </script>
 </body>
-
 </html>

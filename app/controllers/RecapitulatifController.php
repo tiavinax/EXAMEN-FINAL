@@ -22,7 +22,8 @@ class RecapitulatifController
     public function index()
     {
         Flight::render('recapitulatif/index', [
-            'title' => 'Récapitulatif - BNGRC'
+            'title' => 'Récapitulatif - BNGRC',
+            'baseUrl' => $this->baseUrl
         ]);
     }
 

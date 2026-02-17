@@ -70,7 +70,7 @@ class VilleController
     {
         $villeModel = new VilleModel();
         $ville = $villeModel->getById($id);
-        
+
         if (!$ville) {
             $_SESSION['error'] = "Ville non trouvée";
             Flight::redirect('/villes/liste');
@@ -114,14 +114,14 @@ class VilleController
     public function supprimer($id)
     {
         $villeModel = new VilleModel();
-        
+
         // Vérifier si la ville a des besoins
         if ($villeModel->hasBesoins($id)) {
             $_SESSION['error'] = "Impossible de supprimer : cette ville a des besoins associés";
             Flight::redirect('/villes/liste');
             return;
         }
-        
+
         if ($villeModel->delete($id)) {
             $_SESSION['success'] = "Ville supprimée";
         } else {

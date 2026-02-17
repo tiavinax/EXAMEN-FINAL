@@ -10,7 +10,7 @@ include __DIR__ . '/../inc/header.php';
     .filter-item select {
         cursor: pointer;
     }
-
+    
     .filter-badge {
         background: var(--primary);
         color: white;
@@ -19,7 +19,7 @@ include __DIR__ . '/../inc/header.php';
         font-size: 0.7rem;
         margin-left: 0.3rem;
     }
-
+    
     .reset-filters {
         background: var(--gray-100);
         border: 1px solid var(--gray-300);
@@ -34,22 +34,22 @@ include __DIR__ . '/../inc/header.php';
         gap: 0.5rem;
         text-decoration: none;
     }
-
+    
     .reset-filters:hover {
         background: var(--gray-200);
         border-color: var(--gray-400);
     }
-
+    
     .reset-filters i {
         font-size: 0.8rem;
     }
-
+    
     .reset-filters.danger {
         background: #dc3545;
         color: white;
         border-color: #dc3545;
     }
-
+    
     .reset-filters.danger:hover {
         background: #b71c1c;
         border-color: #b71c1c;
@@ -73,17 +73,9 @@ include __DIR__ . '/../inc/header.php';
         font-size: 1rem;
     }
 
-    .mode-badge.fifo {
-        background: var(--primary);
-    }
-
-    .mode-badge.smallest {
-        background: var(--success);
-    }
-
-    .mode-badge.proportional {
-        background: var(--info);
-    }
+    .mode-badge.fifo { background: var(--primary); }
+    .mode-badge.smallest { background: var(--success); }
+    .mode-badge.proportional { background: var(--info); }
 </style>
 
 <div class="dashboard-wrapper">
@@ -168,7 +160,7 @@ include __DIR__ . '/../inc/header.php';
                 <i class="bi bi-geo-alt"></i>
                 <select id="villeFilter">
                     <option value="">Toutes les villes</option>
-                    <?php
+                    <?php 
                     // Ces filtres peuvent être adaptés pour les attributions si nécessaire
                     ?>
                 </select>
@@ -185,7 +177,7 @@ include __DIR__ . '/../inc/header.php';
                 <i class="bi bi-x-circle"></i>
                 Réinitialiser filtres
             </button>
-            <a href="/ETU003955/EXAMEN-FINAL/public/dashboard/reset" class="reset-filters danger" onclick="return confirm('⚠️ Réinitialiser toutes les attributions ? Cette action est irréversible.')">
+            <a href="/dashboard/reset" class="reset-filters danger" onclick="return confirm('⚠️ Réinitialiser toutes les attributions ? Cette action est irréversible.')">
                 <i class="bi bi-arrow-counterclockwise"></i>
                 Réinitialiser tout
             </a>
@@ -220,7 +212,7 @@ include __DIR__ . '/../inc/header.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($attributions ?? [])): ?>
+                    <?php if(empty($attributions ?? [])): ?>
                         <tr>
                             <td colspan="7" class="empty-state">
                                 <i class="fas fa-inbox"></i>
@@ -229,65 +221,65 @@ include __DIR__ . '/../inc/header.php';
                             </td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($attributions as $attrib): ?>
-                            <tr>
-                                <td>
-                                    <div class="date-info">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        <?= date('d/m/Y', strtotime($attrib->date_attribution)) ?>
-                                        <small><?= date('H:i', strtotime($attrib->date_attribution)) ?></small>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge-donateur">
-                                        <i class="fas fa-user-circle"></i>
-                                        <?= htmlspecialchars($attrib->donateur ?? 'Anonyme') ?>
-                                    </span>
-                                </td>
-                                <td><?= htmlspecialchars($attrib->don_libelle) ?></td>
-                                <td>
-                                    <span class="badge-ville">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <?= htmlspecialchars($attrib->ville_nom) ?>
-                                    </span>
-                                </td>
-                                <td><?= htmlspecialchars($attrib->besoin_libelle) ?></td>
-                                <td class="montant <?= $attrib->don_type ?>">
-                                    <?php if ($attrib->montant_attribue): ?>
-                                        <?= number_format($attrib->montant_attribue, 0, ',', ' ') ?> <small>Ar</small>
-                                    <?php else: ?>
-                                        <?= number_format($attrib->quantite_attribuee) ?>
-                                        <small><?= $attrib->don_type === 'nature' ? 'kg' : 'u' ?></small>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <span class="badge-type <?= $attrib->don_type ?>">
-                                        <i class="fas <?= $attrib->don_type === 'nature' ? 'fa-seedling' : ($attrib->don_type === 'materiaux' ? 'fa-tools' : 'fa-coins') ?>"></i>
-                                        <?= ucfirst($attrib->don_type) ?>
-                                    </span>
-                                </td>
-                            </tr>
+                        <?php foreach($attributions as $attrib): ?>
+                        <tr>
+                            <td>
+                                <div class="date-info">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <?= date('d/m/Y', strtotime($attrib->date_attribution)) ?>
+                                    <small><?= date('H:i', strtotime($attrib->date_attribution)) ?></small>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge-donateur">
+                                    <i class="fas fa-user-circle"></i>
+                                    <?= htmlspecialchars($attrib->donateur ?? 'Anonyme') ?>
+                                </span>
+                            </td>
+                            <td><?= htmlspecialchars($attrib->don_libelle) ?></td>
+                            <td>
+                                <span class="badge-ville">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <?= htmlspecialchars($attrib->ville_nom) ?>
+                                </span>
+                            </td>
+                            <td><?= htmlspecialchars($attrib->besoin_libelle) ?></td>
+                            <td class="montant <?= $attrib->don_type ?>">
+                                <?php if($attrib->montant_attribue): ?>
+                                    <?= number_format($attrib->montant_attribue, 0, ',', ' ') ?> <small>Ar</small>
+                                <?php else: ?>
+                                    <?= number_format($attrib->quantite_attribuee) ?> 
+                                    <small><?= $attrib->don_type === 'nature' ? 'kg' : 'u' ?></small>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <span class="badge-type <?= $attrib->don_type ?>">
+                                    <i class="fas <?= $attrib->don_type === 'nature' ? 'fa-seedling' : ($attrib->don_type === 'materiaux' ? 'fa-tools' : 'fa-coins') ?>"></i>
+                                    <?= ucfirst($attrib->don_type) ?>
+                                </span>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
 
-        <?php if (!empty($attributions ?? [])): ?>
-            <div class="table-footer">
-                <div class="text-muted">
-                    <i class="fas fa-database"></i> <?= count($attributions) ?> attribution(s)
-                </div>
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">«</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">»</a></li>
-                    </ul>
-                </nav>
+        <?php if(!empty($attributions ?? [])): ?>
+        <div class="table-footer">
+            <div class="text-muted">
+                <i class="fas fa-database"></i> <?= count($attributions) ?> attribution(s)
             </div>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link" href="#">«</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">»</a></li>
+                </ul>
+            </nav>
+        </div>
         <?php endif; ?>
     </div>
 </div>
@@ -323,55 +315,53 @@ include __DIR__ . '/../inc/header.php';
 
 <?php include __DIR__ . '/../inc/footer.php'; ?>
 
-<script src="/ETU003955/EXAMEN-FINAL/public/assets/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Variables globales
-    let currentModalData = [];
+// Variables globales
+let currentModalData = [];
 
-    // Fonction d'export (adaptée pour les attributions)
-    function exportTable() {
-        const rows = [];
-        const headers = ['Date', 'Donateur', 'Don', 'Ville', 'Besoin', 'Quantité', 'Type'];
-        rows.push(headers.join(','));
-
-        document.querySelectorAll('tbody tr').forEach(row => {
-            if (row.style.display !== 'none') {
-                const rowData = [
-                    row.querySelector('.date-info').textContent.trim().replace(/\s+/g, ' '),
-                    row.querySelector('.badge-donateur').textContent.trim(),
-                    row.querySelector('td:nth-child(3)').textContent.trim(),
-                    row.querySelector('.badge-ville').textContent.trim(),
-                    row.querySelector('td:nth-child(5)').textContent.trim(),
-                    row.querySelector('.montant').textContent.trim(),
-                    row.querySelector('.badge-type').textContent.trim()
-                ];
-                rows.push(rowData.join(','));
-            }
-        });
-
-        const csv = rows.join('\n');
-        const blob = new Blob([csv], {
-            type: 'text/csv'
-        });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'attributions.csv';
-        a.click();
-    }
-
-    // Réinitialiser les filtres (simplifié)
-    document.getElementById('resetFilters')?.addEventListener('click', function() {
-        document.getElementById('villeFilter').value = '';
-        document.getElementById('typeFilter').value = '';
-        // Afficher toutes les lignes
-        document.querySelectorAll('tbody tr').forEach(row => {
-            row.style.display = '';
-        });
+// Fonction d'export (adaptée pour les attributions)
+function exportTable() {
+    const rows = [];
+    const headers = ['Date', 'Donateur', 'Don', 'Ville', 'Besoin', 'Quantité', 'Type'];
+    rows.push(headers.join(','));
+    
+    document.querySelectorAll('tbody tr').forEach(row => {
+        if (row.style.display !== 'none') {
+            const rowData = [
+                row.querySelector('.date-info').textContent.trim().replace(/\s+/g, ' '),
+                row.querySelector('.badge-donateur').textContent.trim(),
+                row.querySelector('td:nth-child(3)').textContent.trim(),
+                row.querySelector('.badge-ville').textContent.trim(),
+                row.querySelector('td:nth-child(5)').textContent.trim(),
+                row.querySelector('.montant').textContent.trim(),
+                row.querySelector('.badge-type').textContent.trim()
+            ];
+            rows.push(rowData.join(','));
+        }
     });
+    
+    const csv = rows.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'attributions.csv';
+    a.click();
+}
 
-    // Animation du menu mobile
-    document.querySelector('.hamburger')?.addEventListener('click', function() {
-        document.querySelector('.nav-menu')?.classList.toggle('active');
+// Réinitialiser les filtres (simplifié)
+document.getElementById('resetFilters')?.addEventListener('click', function() {
+    document.getElementById('villeFilter').value = '';
+    document.getElementById('typeFilter').value = '';
+    // Afficher toutes les lignes
+    document.querySelectorAll('tbody tr').forEach(row => {
+        row.style.display = '';
     });
+});
+
+// Animation du menu mobile
+document.querySelector('.hamburger')?.addEventListener('click', function() {
+    document.querySelector('.nav-menu')?.classList.toggle('active');
+});
 </script>

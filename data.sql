@@ -68,55 +68,18 @@ INSERT INTO villes (nom, region) VALUES
 
 -- Besoins des villes
 INSERT INTO besoins (ville_id, libelle, type, quantite, prix_unitaire) VALUES
-(1, 'Riz', 'nature', 100, 2500),
-(1, 'Tôle ondulée', 'materiaux', 50, 15000),
-(2, 'Eau potable', 'nature', 500, 500),
-(3, 'Couvertures', 'nature', 200, 5000);
+(1, 'Riz', 'nature', 1, 20),
+(2, 'Eau potable', 'nature', 3, 50),
+(3, 'Tôle', 'materiaux', 5, 15),
+(1, 'Tôle', 'materiaux', 10, 15),
+(2, 'Clou', 'materiaux', 3, 15),
+(3, 'aide financiere', 'argent', 0, 100);
 
 -- Dons reçus
 INSERT INTO dons (donateur, type, libelle, quantite, montant) VALUES
-('Croix Rouge', 'nature', 'Riz 50kg', 50, NULL),
-('Donateur privé', 'materiaux', 'Tôle', 30, NULL),
-('Collecte', 'argent', 'Aide financière', NULL, 500000);
-
--- Attributions (distribution)
-INSERT INTO attributions (don_id, besoin_id, ville_id, quantite_attribuee, montant_attribue) VALUES
-(1, 1, 1, 50, NULL),
-(2, 2, 1, 30, NULL),
-(3, 4, 3, NULL, 500000);-- Insertion des données de test
-INSERT INTO villes (nom, region) VALUES
-('Antananarivo', 'Analamanga'),
-('Toamasina', 'Atsinanana'),
-('Mahajanga', 'Boeny'),
-('Fianarantsoa', 'Haute Matsiatra'),
-('Antsiranana', 'Diana');
-
-INSERT INTO besoins (ville_id, libelle, type, quantite, prix_unitaire) VALUES
-(1, 'Riz', 'nature', 1000, 1500),
-(1, 'Huile', 'nature', 500, 3000),
-(1, 'Tôles', 'materiaux', 200, 4000),
-(2, 'Riz', 'nature', 800, 1500),
-(2, 'Huile', 'nature', 300, 3000),
-(3, 'Riz', 'nature', 1200, 1500),
-(3, 'Tôles', 'materiaux', 150, 4000),
-(4, 'Riz', 'nature', 600, 1500),
-(4, 'Huile', 'nature', 200, 3000),
-(5, 'Riz', 'nature', 400, 1500);
-
-INSERT INTO dons (donateur, type, libelle, quantite, montant, date_don) VALUES
-('Croix Rouge', 'nature', 'Riz', 800, NULL, '2026-02-15 10:00:00'),
-('UNICEF', 'nature', 'Huile', 400, NULL, '2026-02-15 11:30:00'),
-('Entreprise Locale', 'materiaux', 'Tôles', 100, NULL, '2026-02-15 14:15:00'),
-('Donateur Anonyme', 'argent', 'Don en espèces', NULL, 2000000, '2026-02-16 09:00:00');
-
-INSERT INTO attributions (don_id, besoin_id, ville_id, quantite_attribuee, montant_attribue, date_attribution) VALUES
-(1, 1, 1, 300, NULL, '2026-02-16 10:30:00'),
-(1, 4, 2, 200, NULL, '2026-02-16 09:15:00'),
-(2, 2, 1, 150, NULL, '2026-02-16 10:30:00'),
-(2, 5, 2, 100, NULL, '2026-02-16 09:15:00'),
-(3, 3, 1, 50, NULL, '2026-02-15 16:45:00'),
-(4, 1, 1, NULL, 500000, '2026-02-16 11:00:00');
-
+('Croix Rouge', 'nature', 'Riz 50kg', 10, NULL),
+('Donateur privé', 'materiaux', 'Tôle', 20, NULL),
+('Collecte', 'argent', 'Aide financière', NULL, 500);
 
 -- ================ SCRIPTE SQL DU 17/02/2026 ==================
 

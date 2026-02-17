@@ -1,5 +1,6 @@
 <?php
 // inc/header.php
+// La fonction base_url() est déjà disponible via helpers.php
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,36 +18,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Bootstrap Local -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/bootstrap/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Bootstrap Local - CORRECTION: utilisation de asset_url() -->
+    <link rel="stylesheet" href="<?= asset_url('css/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('bootstrap/bootstrap-icons/font/bootstrap-icons.css') ?>">
 
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= asset_url('js/bootstrap.bundle.min.js') ?>"></script>
 
+    <!-- Custom CSS - CORRECTION: utilisation de asset_url() -->
+    <link rel="stylesheet" href="<?= asset_url('css/style.css') ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/header.css') ?>">
 
-    <!-- Custom CSS -->
-    <!-- Dans inc/header.php -->
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css"> <!-- si besoin -->
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/header.css">
     <?php if (isset($page_css)): ?>
         <?php foreach ($page_css as $css): ?>
-            <link rel="stylesheet" href="/assets/css/<?= $css ?>.css">
-        <?php endforeach; ?>
-    <?php endif; ?>
-    <?php if (isset($page_css)): ?>
-        <?php foreach ($page_css as $css): ?>
-            <link rel="stylesheet" href="/assets/css/<?= $css ?>.css">
+            <link rel="stylesheet" href="<?= asset_url('css/' . $css . '.css') ?>">
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/bngrc.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/bngrc.png">
-    <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/bngrc.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/bngrc.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/bngrc.png">
+    <!-- Favicon - CORRECTION: utilisation de asset_url() -->
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset_url('images/bngrc.png') ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="<?= asset_url('images/bngrc.png') ?>">
+    <link rel="icon" type="image/png" sizes="48x48" href="<?= asset_url('images/bngrc.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('images/bngrc.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('images/bngrc.png') ?>">
 
     <style>
         /* Variables globales */
@@ -90,9 +83,9 @@
     <header class="site-header">
         <div class="header-top">
             <div class="container logos-row">
-                <img src="/assets/images/interieure.png" alt="Ministère de l'Intérieur" class="logo-left">
-                <img src="/assets/images/republique.png" alt="République de Madagascar" class="logo-center">
-                <img src="/assets/images/bngrc.png" alt="BNGRC" class="logo-right">
+                <img src="<?= asset_url('images/interieure.png') ?>" alt="Ministère de l'Intérieur" class="logo-left">
+                <img src="<?= asset_url('images/republique.png') ?>" alt="République de Madagascar" class="logo-center">
+                <img src="<?= asset_url('images/bngrc.png') ?>" alt="BNGRC" class="logo-right">
             </div>
             <div class="main-title">
                 BUREAU NATIONAL DE GESTION DES RISQUES ET DES CATASTROPHES
@@ -102,23 +95,16 @@
         <nav class="navbar">
             <div class="container navbar-container">
                 <ul class="nav-menu">
-                    <li><a href="/" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">ACCUEIL</a></li>
-                    <li><a href="/villes/liste" class="nav-link">VILLE</i></a></li>
-                    <li><a href="/besoins/liste" class="nav-link">BESOIN</i></a></li>
-                    <li><a href="/dons/liste" class="nav-link">FAIRE UN DONS</a></li>
-                    <li><a href="/dispatch" class="nav-link">DISTRIBUTION</a></li>
-                    <li><a href="/dashboard" class="nav-link">Tableau de bord</a></li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">ACHATS</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/achats/besoins-restants" class="dropdown-item">🛒 Besoins restants</a></li>
-                            <li><a href="/achats/historique" class="dropdown-item">📜 Historique achats</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/recapitulatif" class="nav-link">RÉCAP GLOBAL</a>
-                    </li>
-                    <li><a href="/#contact" class="nav-link">CONTACT</a></li>
+                    <!-- CORRECTION: tous les liens utilisent base_url() -->
+                    <li><a href="<?= base_url() ?>" class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">ACCUEIL</a></li>
+                    <li><a href="<?= base_url('villes/liste') ?>" class="nav-link">VILLE</a></li>
+                    <li><a href="<?= base_url('besoins/liste') ?>" class="nav-link">BESOIN</a></li>
+                    <li><a href="<?= base_url('dons/liste') ?>" class="nav-link">FAIRE UN DON</a></li>
+                    <li><a href="<?= base_url('dispatch') ?>" class="nav-link">DISTRIBUTION</a></li>
+                    <li><a href="<?= base_url('dashboard') ?>" class="nav-link">DASHBOARD</a></li>
+                    <li><a href="<?= base_url('achats/besoins-restants') ?>" class="nav-link">BESOIN RESTANTS</a></li>
+                    <li><a href="<?= base_url('achats/historique') ?>" class="nav-link">HISTORIQUE-ACHAT</a></li>
+                    <li><a href="<?= base_url('recapitulatif') ?>" class="nav-link">RÉCAP GLOBAL</a></li>
                 </ul>
             </div>
         </nav>
