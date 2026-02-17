@@ -108,6 +108,16 @@
                     <li><a href="/dons/liste" class="nav-link">FAIRE UN DONS</a></li>
                     <li><a href="/dispatch" class="nav-link">DISTRIBUTION</a></li>
                     <li><a href="/dashboard" class="nav-link">Tableau de bord</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">ACHATS</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/achats/besoins-restants" class="dropdown-item">🛒 Besoins restants</a></li>
+                            <li><a href="/achats/historique" class="dropdown-item">📜 Historique achats</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/recapitulatif" class="nav-link">RÉCAP GLOBAL</a>
+                    </li>
                     <li><a href="/#contact" class="nav-link">CONTACT</a></li>
                 </ul>
             </div>

@@ -5,6 +5,8 @@ use app\controllers\DonController;
 use app\controllers\BesoinController;
 use app\controllers\VilleController;
 use app\controllers\DispatchController;
+use app\controllers\AchatController;
+use app\controllers\RecapitulatifController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -18,7 +20,7 @@ use flight\net\Router;
 $router->group('', function (Router $router) use ($app) {
 
     // Route d'accueil - localhost:8000
-    Flight::route('/', function() use ($app) {
+    Flight::route('/', function () use ($app) {
         // Utiliser le système de templates comme les autres routes
         $app->render('accueil', [
             'title' => 'BNGRC - Accueil'
@@ -26,12 +28,12 @@ $router->group('', function (Router $router) use ($app) {
     });
 
     // Route de test (optionnelle) - redirige vers l'accueil
-    Flight::route('/test', function() use ($app) {
+    Flight::route('/test', function () use ($app) {
         $app->render('accueil', [
             'title' => 'BNGRC - Accueil'
         ]);
     });
-    
+
     // ============================================
     // ROUTES POUR LE PROJET BNGRC
     // ============================================
@@ -84,5 +86,15 @@ $router->group('', function (Router $router) use ($app) {
     // API endpoints (optionnels)
     $router->get('/api/attributions', [DispatchController::class, 'apiGetAttributions']);
     $router->post('/api/dispatch/run', [DispatchController::class, 'apiRun']);
-    
+
+    // Gestion des achats
+    $router->get('/achats/besoins-restants', [AchatController::class, 'besoinsRestants']);
+    $router->get('/achats/modal-data', [AchatController::class, 'getModalData']);
+    $router->post('/achats/simuler', [AchatController::class, 'simuler']);
+    $router->post('/achats/valider', [AchatController::class, 'valider']);
+    $router->get('/achats/historique', [AchatController::class, 'historique']);
+
+    // Dans config/routes.php
+    $router->get('/recapitulatif', [RecapitulatifController::class, 'index']);
+    $router->get('/recapitulatif/data', [RecapitulatifController::class, 'getData']);
 }, [SecurityHeadersMiddleware::class]);
