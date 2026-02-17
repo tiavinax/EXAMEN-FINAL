@@ -116,3 +116,35 @@ INSERT INTO attributions (don_id, besoin_id, ville_id, quantite_attribuee, monta
 (2, 5, 2, 100, NULL, '2026-02-16 09:15:00'),
 (3, 3, 1, 50, NULL, '2026-02-15 16:45:00'),
 (4, 1, 1, NULL, 500000, '2026-02-16 11:00:00');
+
+
+-- ================ SCRIPTE SQL DU 17/02/2026 ==================
+
+-- Table pour enregistrer les achats effectués avec dons argent
+
+CREATE TABLE IF NOT EXISTS parametre (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    libelle VARCHAR(100) NOT NULL,
+    valeur VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS achats (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    don_id INT NOT NULL,
+    besoin_id INT NOT NULL,
+    quantite INT NOT NULL,
+    montant_achat DECIMAL(15,2) NOT NULL, -- montant du besoin (quantite × prix_unitaire)
+    frais_pourcentage DECIMAL(5,2) NOT NULL,
+    montant_frais DECIMAL(15,2) NOT NULL,
+    montant_total DECIMAL(15,2) NOT NULL, -- montant_achat + montant_frais
+    date_achat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (don_id) REFERENCES dons(id) ON DELETE CASCADE,
+    FOREIGN KEY (besoin_id) REFERENCES besoins(id) ON DELETE CASCADE
+);
+
+-- Insertion du paramètre de frais
+INSERT INTO parametre (libelle, valeur, description) 
+VALUES ('frais_achat', '10', 'Pourcentage de frais appliqué aux achats via dons argent');

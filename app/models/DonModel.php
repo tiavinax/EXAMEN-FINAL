@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+
 use app\utils\Database;
 use Flight;
 use PDO;
@@ -68,7 +69,7 @@ class DonModel
         ]);
     }
 
-    
+
 
     /**
      * Récupérer un don par ID
@@ -125,5 +126,43 @@ class DonModel
         $sql = "DELETE FROM dons WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$id]);
+    }
+
+    /**
+     * Récupérer les dons en argent non utilisés (ou avec solde restant)
+     */
+    public function getDonsArgentDisponibles()
+    {
+        $sql = "SELECT d.*, 
+                   COALESCE(SUM(a.montant_attribue), 0) AS total_utilise,
+                   (d.montant - COALESCE(SUM(a.montant_attribue), 0)) AS solde
+            FROM dons d
+            LEFT JOIN attributions a ON d.id = a.don_id
+            WHERE d.type = 'argent'
+            GROUP BY d.id
+            HAVING solde > 0
+            ORDER BY d.date_don ASC";
+
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    /**
+     * Récupérer un don avec son solde
+     */
+    
+    public function getDonAvecSolde($id)
+    {
+        $sql = "SELECT d.*, 
+                   COALESCE(SUM(a.montant_attribue), 0) AS total_utilise,
+                   (d.montant - COALESCE(SUM(a.montant_attribue), 0)) AS solde
+            FROM dons d
+            LEFT JOIN attributions a ON d.id = a.don_id
+            WHERE d.id = ? AND d.type = 'argent'
+            GROUP BY d.id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 }

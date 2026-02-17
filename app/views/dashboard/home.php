@@ -223,7 +223,7 @@ include __DIR__ . '/../inc/header.php';
                         <td class="fw-semibold"><?= number_format($d->besoin_quantite) ?></td>
                         <td class="text-success fw-semibold"><?= number_format($d->total_attribue) ?></td>
                         <td class="<?= $d->reste > 0 ? 'text-danger' : 'text-success' ?> fw-semibold">
-                            <?= number_format($d->reste) ?>
+                            <?= number_format($d->reste * -1) ?>
                         </td>
                         <td>
                             <div class="progress-wrapper">

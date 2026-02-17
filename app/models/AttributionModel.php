@@ -165,4 +165,45 @@ class AttributionModel
         $sql = "DELETE FROM attributions";
         return $this->db->exec($sql);
     }
+
+    /**
+     * Calculer la valeur totale de toutes les attributions
+     */
+    public function getTotalValeurAttributions()
+    {
+        $sql = "SELECT 
+                SUM(
+                    CASE 
+                        WHEN b.type = 'argent' THEN a.montant_attribue
+                        ELSE a.quantite_attribuee * b.prix_unitaire
+                    END
+                ) AS total
+            FROM attributions a
+            INNER JOIN besoins b ON a.besoin_id = b.id";
+
+        $stmt = $this->db->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        return $result->total ?? 0;
+    }
+    /**
+     * Récupérer le total attribué pour un besoin
+     */
+    public function getTotalByBesoin($besoinId)
+    {
+        $sql = "SELECT 
+                COALESCE(SUM(
+                    CASE 
+                        WHEN b.type = 'argent' THEN a.montant_attribue
+                        ELSE a.quantite_attribuee
+                    END
+                ), 0) AS total
+            FROM attributions a
+            INNER JOIN besoins b ON a.besoin_id = b.id
+            WHERE a.besoin_id = ?";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$besoinId]);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+        return $result->total ?? 0;
+    }
 }
